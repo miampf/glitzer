@@ -128,6 +128,11 @@ pub fn tick(bar bar: ProgressStyle) -> ProgressStyle {
   ProgressStyle(..bar, state: State(progress: bar.state.progress + 1))
 }
 
+/// Completely fill the progress bar.
+pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
+  ProgressStyle(..bar, state: State(progress: bar.length + 1))
+}
+
 /// Print the progress bar to stderr.
 pub fn print_bar(bar bar: ProgressStyle) {
   let fill =

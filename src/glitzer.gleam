@@ -13,9 +13,12 @@ pub fn main() {
 fn do_something(bar, count) {
   case count < 100 {
     True -> {
-      let bar = progress.tick(bar)
+      let bar = case count > 50 {
+        True -> progress.finish(bar)
+        False -> progress.tick(bar)
+      }
       progress.print_bar(bar)
-      sleep(1000)
+      sleep(15)
       do_something(bar, count + 1)
     }
     False -> Nil
