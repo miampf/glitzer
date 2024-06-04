@@ -57,6 +57,8 @@ pub opaque type ProgressStyle {
   )
 }
 
+// SECTION: progress bar definitions
+
 /// Create and return a default progress bar.
 pub fn default_bar() -> ProgressStyle {
   ProgressStyle(
@@ -72,7 +74,23 @@ pub fn default_bar() -> ProgressStyle {
   )
 }
 
-/// Create and return a fancy progress bar (inspired by pip).
+/// Create and return a fancy and slim progress bar (inspired by pip).
+pub fn slim_bar() -> ProgressStyle {
+  let sym = "\u{2014}"
+  ProgressStyle(
+    left: "",
+    right: "",
+    empty: Char(" "),
+    fill: Char(sym),
+    fill_finished: option.None,
+    fill_head: option.None,
+    fill_head_finished: option.None,
+    length: 100,
+    state: State(progress: 0, finished: False),
+  )
+}
+
+/// Create and return a fancy and slim progress bar (inspired by pip).
 pub fn fancy_slim_bar() -> ProgressStyle {
   let sym = "\u{2014}"
   ProgressStyle(
@@ -87,6 +105,57 @@ pub fn fancy_slim_bar() -> ProgressStyle {
     state: State(progress: 0, finished: False),
   )
 }
+
+/// Create and return a fancy and slim progress bar with an arrow head.
+pub fn fancy_slim_arrow_bar() -> ProgressStyle {
+  let sym = "\u{2014}"
+  let sym_head = "\u{2192}"
+  ProgressStyle(
+    left: "",
+    right: "",
+    empty: Char(ansi.blue(sym)),
+    fill: Char(ansi.red(sym)),
+    fill_finished: option.Some(Char(ansi.green(sym))),
+    fill_head: option.Some(Char(ansi.red(sym_head))),
+    fill_head_finished: option.Some(Char(ansi.green(sym_head))),
+    length: 100,
+    state: State(progress: 0, finished: False),
+  )
+}
+
+pub fn thick_bar() -> ProgressStyle {
+  let sym = "\u{2588}"
+  let empty_sym = "\u{2592}"
+  ProgressStyle(
+    left: "",
+    right: "",
+    empty: Char(empty_sym),
+    fill: Char(sym),
+    fill_finished: option.None,
+    fill_head: option.None,
+    fill_head_finished: option.None,
+    length: 100,
+    state: State(progress: 0, finished: False),
+  )
+}
+
+pub fn fancy_thick_bar() -> ProgressStyle {
+  let sym = "\u{2588}"
+  let empty_sym = "\u{2592}"
+  ProgressStyle(
+    left: "",
+    right: "",
+    empty: Char(ansi.blue(empty_sym)),
+    fill: Char(ansi.red(sym)),
+    fill_finished: option.Some(Char(ansi.green(sym))),
+    fill_head: option.None,
+    fill_head_finished: option.None,
+    length: 100,
+    state: State(progress: 0, finished: False),
+  )
+}
+
+// ENDSECTION: progress bar definitions
 
 /// Create a new (completely empty) progress bar.
 ///

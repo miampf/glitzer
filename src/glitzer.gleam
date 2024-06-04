@@ -6,8 +6,7 @@ pub fn sleep(ms: Int) -> a
 
 pub fn main() {
   let bar =
-    progress.fancy_slim_bar()
-    |> progress.with_fill_head(progress.char_from_string(">"))
+    progress.fancy_thick_bar()
     |> progress.with_length(10)
 
   do_something(bar, 0)
