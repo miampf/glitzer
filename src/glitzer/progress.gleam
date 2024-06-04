@@ -134,6 +134,31 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 }
 
 /// Print the progress bar to stderr.
+///
+/// <details>
+/// <summary>Example:<summary>
+///
+/// ```gleam
+/// import glitzer/progress
+///
+/// fn example() {
+///   let bar = progress.default_bar()
+///
+///   run_example(bar, 0)
+/// }
+///
+/// fn run_example(bar, count) {
+///   case count < 100 {
+///     True -> {
+///       let bar = progress.tick(bar)
+///       // do some awesome stuff :3
+///       progress.print_bar(bar)
+///       run_example(bar, count + 1)
+///     }
+///     False -> Nil
+///   }
+/// }
+/// ```
 pub fn print_bar(bar bar: ProgressStyle) {
   let fill =
     build_progress_fill(string_builder.new(), bar, bar.state.progress, 0)
