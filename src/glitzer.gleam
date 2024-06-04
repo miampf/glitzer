@@ -1,5 +1,3 @@
-import gleam/iterator
-
 import glitzer/progress
 
 @external(erlang, "glitzer_ffi", "sleep")
@@ -9,11 +7,17 @@ pub fn sleep(ms: Int) -> a
 pub fn main() {
   let bar = progress.default_bar()
 
-  iterator.range(0, 100)
-  |> iterator.map(fn(_) {
-    let bar = progress.tick(bar)
-    progress.print_bar(bar)
-    sleep(1000)
-  })
-  |> iterator.run
+  do_something(bar, 0)
+}
+
+fn do_something(bar, count) {
+  case count < 100 {
+    True -> {
+      let bar = progress.tick(bar)
+      progress.print_bar(bar)
+      sleep(1000)
+      do_something(bar, count + 1)
+    }
+    False -> Nil
+  }
 }

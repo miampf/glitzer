@@ -131,13 +131,7 @@ pub fn tick(bar bar: ProgressStyle) -> ProgressStyle {
 /// Print the progress bar to stderr.
 pub fn print_bar(bar bar: ProgressStyle) {
   let fill =
-    build_progress_fill(
-      string_builder.new(),
-      bar,
-      bar.length,
-      bar.state.progress,
-      0,
-    )
+    build_progress_fill(string_builder.new(), bar, bar.state.progress, 0)
     |> string_builder.to_string
 
   io.print_error(
@@ -150,26 +144,18 @@ pub fn print_bar(bar bar: ProgressStyle) {
 }
 
 fn build_progress_fill(
-  to_fill: StringBuilder,
+  fill: StringBuilder,
   bar: ProgressStyle,
-  max: Int,
-  left_to_fill: Int,
+  left_nonempty: Int,
   count: Int,
 ) -> StringBuilder {
-  let fill = case left_to_fill > 0 {
-    True -> bar.fill.char
-    False -> bar.empty.char
+  let fill = case left_nonempty > 0 {
+    True -> string_builder.append(fill, bar.fill.char)
+    False -> string_builder.append(fill, bar.empty.char)
   }
 
-  case count >= max {
-    False ->
-      build_progress_fill(
-        string_builder.append(to_fill, fill),
-        bar,
-        max,
-        left_to_fill - 1,
-        count + 1,
-      )
-    True -> to_fill
+  case bar.length > count {
+    True -> build_progress_fill(fill, bar, left_nonempty - 1, count + 1)
+    False -> fill
   }
 }
