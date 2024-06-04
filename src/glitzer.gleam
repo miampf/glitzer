@@ -5,20 +5,23 @@ import glitzer/progress
 pub fn sleep(ms: Int) -> a
 
 pub fn main() {
-  let bar = progress.fancy_slim_bar()
+  let bar =
+    progress.fancy_slim_bar()
+    |> progress.with_fill_head(progress.char_from_string(">"))
+    |> progress.with_length(10)
 
   do_something(bar, 0)
 }
 
 fn do_something(bar, count) {
-  case count < 100 {
+  case count < 10 {
     True -> {
-      let bar = case count > 50 {
+      let bar = case count > 5 {
         True -> progress.finish(bar)
         False -> progress.tick(bar)
       }
       progress.print_bar(bar)
-      sleep(15)
+      sleep(100)
       do_something(bar, count + 1)
     }
     False -> Nil

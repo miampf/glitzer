@@ -50,6 +50,8 @@ pub opaque type ProgressStyle {
     empty: Char,
     fill: Char,
     fill_finished: Option(Char),
+    fill_head: Option(Char),
+    fill_head_finished: Option(Char),
     length: Int,
     state: State,
   )
@@ -63,6 +65,8 @@ pub fn default_bar() -> ProgressStyle {
     empty: Char(" "),
     fill: Char("#"),
     fill_finished: option.None,
+    fill_head_finished: option.None,
+    fill_head: option.None,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -77,6 +81,8 @@ pub fn fancy_slim_bar() -> ProgressStyle {
     empty: Char(ansi.blue(sym)),
     fill: Char(ansi.red(sym)),
     fill_finished: option.Some(Char(ansi.green(sym))),
+    fill_head: option.None,
+    fill_head_finished: option.None,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -105,6 +111,8 @@ pub fn new_bar() -> ProgressStyle {
     empty: Char(" "),
     fill: Char(" "),
     fill_finished: option.None,
+    fill_head: option.None,
+    fill_head_finished: option.None,
     length: 0,
     state: State(progress: 0, finished: False),
   )
@@ -144,6 +152,11 @@ pub fn with_fill_finished(
   fill char: Char,
 ) -> ProgressStyle {
   ProgressStyle(..bar, fill_finished: option.Some(char))
+}
+
+/// Add a head to the progress bar.
+pub fn with_fill_head(bar bar: ProgressStyle, fill char: Char) -> ProgressStyle {
+  ProgressStyle(..bar, fill_head: option.Some(char))
 }
 
 /// Add length to a progress bar.
@@ -221,20 +234,56 @@ fn build_progress_fill(
 ) -> StringBuilder {
   let fill = case left_nonempty > 0 {
     True -> {
-      case bar.state.finished {
-        True ->
-          string_builder.append(
-            fill,
-            option.unwrap(bar.fill_finished, bar.fill).char,
-          )
-        False -> string_builder.append(fill, bar.fill.char)
+      case left_nonempty == 1 {
+        True -> get_finished_head_fill(fill, bar)
+        False -> get_finished_fill(fill, bar)
       }
     }
+    // fill all thats left with empty characters
     False -> string_builder.append(fill, bar.empty.char)
   }
 
   case bar.length > count {
     True -> build_progress_fill(fill, bar, left_nonempty - 1, count + 1)
     False -> fill
+  }
+}
+
+fn get_finished_head_fill(
+  fill: StringBuilder,
+  bar: ProgressStyle,
+) -> StringBuilder {
+  case bar.state.finished {
+    True ->
+      // build the finished style
+      string_builder.append(
+        fill,
+        option.unwrap(
+          // if head_finished exists
+          bar.fill_head_finished,
+          option.unwrap(
+            // if only a head exist
+            bar.fill_head,
+            // otherwise, use fill_finished of fill (if fill_finished doesnt exist)
+            option.unwrap(bar.fill_finished, bar.fill),
+          ),
+        ).char,
+      )
+    // build the unfinished style
+    False ->
+      string_builder.append(fill, option.unwrap(bar.fill_head, bar.fill).char)
+  }
+}
+
+fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
+  case bar.state.finished {
+    True ->
+      // build the finished style
+      string_builder.append(
+        fill,
+        option.unwrap(bar.fill_finished, bar.fill).char,
+      )
+    // build the unfinished style
+    False -> string_builder.append(fill, bar.fill.char)
   }
 }
