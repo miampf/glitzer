@@ -6,21 +6,21 @@ pub fn sleep(ms: Int) -> a
 
 pub fn main() {
   let bar =
-    progress.default_bar()
-    |> progress.with_fill_finished(progress.char_from_string("-"))
+    progress.fancy_thick_bar()
+    |> progress.with_length(10)
 
   do_something(bar, 0)
 }
 
 fn do_something(bar, count) {
-  case count < 100 {
+  case count < 10 {
     True -> {
-      let bar = case count > 50 {
+      let bar = case count > 5 {
         True -> progress.finish(bar)
         False -> progress.tick(bar)
       }
       progress.print_bar(bar)
-      sleep(15)
+      sleep(100)
       do_something(bar, count + 1)
     }
     False -> Nil
