@@ -1,4 +1,5 @@
 import gleam/io
+import gleam/option.{type Option}
 import gleam/string
 import gleam/string_builder.{type StringBuilder}
 
@@ -36,7 +37,7 @@ pub fn string_from_char(from in: Char) -> String {
 }
 
 pub opaque type State {
-  State(progress: Int)
+  State(progress: Int, finished: Bool)
 }
 
 /// The style of a progress bar.
@@ -46,6 +47,7 @@ pub opaque type ProgressStyle {
     right: String,
     empty: Char,
     fill: Char,
+    fill_finished: Option(Char),
     length: Int,
     state: State,
   )
@@ -58,8 +60,9 @@ pub fn default_bar() -> ProgressStyle {
     right: "]",
     empty: Char(" "),
     fill: Char("#"),
+    fill_finished: option.None,
     length: 100,
-    state: State(progress: 0),
+    state: State(progress: 0, finished: False),
   )
 }
 
@@ -85,8 +88,9 @@ pub fn new_bar() -> ProgressStyle {
     right: "",
     empty: Char(" "),
     fill: Char(" "),
+    fill_finished: option.None,
     length: 0,
-    state: State(progress: 0),
+    state: State(progress: 0, finished: False),
   )
 }
 
@@ -118,6 +122,14 @@ pub fn with_fill(bar bar: ProgressStyle, fill char: Char) -> ProgressStyle {
   ProgressStyle(..bar, fill: char)
 }
 
+/// Add a character that will be used instead of `fill` if the bar is finished.
+pub fn with_fill_finished(
+  bar bar: ProgressStyle,
+  fill char: Char,
+) -> ProgressStyle {
+  todo
+}
+
 /// Add length to a progress bar.
 pub fn with_length(bar bar: ProgressStyle, length len: Int) -> ProgressStyle {
   ProgressStyle(..bar, length: len)
@@ -125,12 +137,23 @@ pub fn with_length(bar bar: ProgressStyle, length len: Int) -> ProgressStyle {
 
 /// Increase the progress of the bar by one.
 pub fn tick(bar bar: ProgressStyle) -> ProgressStyle {
-  ProgressStyle(..bar, state: State(progress: bar.state.progress + 1))
+  case bar.state.progress < bar.length + 1 {
+    True ->
+      ProgressStyle(
+        ..bar,
+        state: State(..bar.state, progress: bar.state.progress + 1),
+      )
+    False ->
+      ProgressStyle(
+        ..bar,
+        state: State(finished: True, progress: bar.state.progress + 1),
+      )
+  }
 }
 
 /// Completely fill the progress bar.
 pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
-  ProgressStyle(..bar, state: State(progress: bar.length + 1))
+  ProgressStyle(..bar, state: State(finished: True, progress: bar.length + 1))
 }
 
 /// Print the progress bar to stderr.
@@ -180,7 +203,16 @@ fn build_progress_fill(
   count: Int,
 ) -> StringBuilder {
   let fill = case left_nonempty > 0 {
-    True -> string_builder.append(fill, bar.fill.char)
+    True -> {
+      case bar.state.finished {
+        True ->
+          string_builder.append(
+            fill,
+            option.unwrap(bar.fill_finished, bar.fill).char,
+          )
+        False -> string_builder.append(fill, bar.fill.char)
+      }
+    }
     False -> string_builder.append(fill, bar.empty.char)
   }
 
