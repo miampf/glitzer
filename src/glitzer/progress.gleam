@@ -3,6 +3,8 @@ import gleam/option.{type Option}
 import gleam/string
 import gleam/string_builder.{type StringBuilder}
 
+import gleam_community/ansi
+
 import glitzer/codes
 
 /// A `String` with only one character.
@@ -53,7 +55,7 @@ pub opaque type ProgressStyle {
   )
 }
 
-/// Create and return a default style for a progress bar.
+/// Create and return a default progress bar.
 pub fn default_bar() -> ProgressStyle {
   ProgressStyle(
     left: "[",
@@ -61,6 +63,20 @@ pub fn default_bar() -> ProgressStyle {
     empty: Char(" "),
     fill: Char("#"),
     fill_finished: option.None,
+    length: 100,
+    state: State(progress: 0, finished: False),
+  )
+}
+
+/// Create and return a fancy progress bar (inspired by pip).
+pub fn fancy_slim_bar() -> ProgressStyle {
+  let sym = "\u{2014}"
+  ProgressStyle(
+    left: "",
+    right: "",
+    empty: Char(ansi.blue(sym)),
+    fill: Char(ansi.red(sym)),
+    fill_finished: option.Some(Char(ansi.green(sym))),
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -188,7 +204,8 @@ pub fn print_bar(bar bar: ProgressStyle) {
     |> string_builder.to_string
 
   io.print_error(
-    codes.clear_line_code
+    codes.hide_cursor_code
+    <> codes.clear_line_code
     <> codes.return_line_start_code
     <> bar.left
     <> fill
