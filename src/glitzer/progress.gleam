@@ -127,7 +127,7 @@ pub fn with_fill_finished(
   bar bar: ProgressStyle,
   fill char: Char,
 ) -> ProgressStyle {
-  todo
+  ProgressStyle(..bar, fill_finished: option.Some(char))
 }
 
 /// Add length to a progress bar.

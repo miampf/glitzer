@@ -5,7 +5,9 @@ import glitzer/progress
 pub fn sleep(ms: Int) -> a
 
 pub fn main() {
-  let bar = progress.default_bar()
+  let bar =
+    progress.default_bar()
+    |> progress.with_fill_finished(progress.char_from_string("-"))
 
   do_something(bar, 0)
 }
