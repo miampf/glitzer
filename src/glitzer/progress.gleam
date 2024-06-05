@@ -406,6 +406,22 @@ fn tick_bar_by_i(bar, i) -> ProgressStyle {
   }
 }
 
+pub fn map2_iterator(
+  iterator1 i1: Iterator(a),
+  iterator2 i2: Iterator(b),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a, b) -> c,
+) -> Iterator(c) {
+  iterator.zip(i1, i2)
+  |> iterator.index
+  |> iterator.map(fn(pair) {
+    let #(pair, i) = pair
+    let #(el1, el2) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el1, el2)
+  })
+}
+
 pub fn each_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
