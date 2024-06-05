@@ -135,23 +135,19 @@ proposed features (and known issues).
 
 ## Support
 
-> **[?]** Provide additional ways to contact the project maintainer/maintainers.
+New code and pull requests are greatly appreciated! If you want to contribute,
+check the [contributing guidelines](#contributing) and submit a PR :3
 
-Reach out to the maintainer at one of the following places:
-
-- [GitHub issues](https://github.com/miampf/glitzer/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)
-- Contact options listed on [this GitHub profile](https://github.com/miampf)
+If you have any questions, feel free to
+[create a question]((https://github.com/miampf/glitzer/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+))!
+Please note that it may take some time for me to respond. I am not paid for
+doing this and do have a private life (surprise!) :]
 
 ## Project assistance
 
-If you want to say **thank you** or/and support active development of glitzer:
-
-- Add a [GitHub Star](https://github.com/miampf/glitzer) to the project.
-- Tweet about the glitzer.
-- Write interesting articles about the project on [Dev.to](https://dev.to/),
-  [Medium](https://medium.com/) or your personal blog.
-
-Together, we can make glitzer **better**!
+If you want to say **thank you** or/and support active development of glitzer,
+feel free to add a [GitHub Star](https://github.com/miampf/glitzer) to the
+project!
 
 ## Contributing
 
@@ -171,7 +167,7 @@ See [LICENSE](LICENSE) for more information.
 
 ## Acknowledgements
 
-> **[?]** If your work was funded by any organization or institution,
-> acknowledge their support here. In addition, if your work relies on other
-> software libraries, or was inspired by looking at other work, it is
-> appropriate to acknowledge this intellectual debt too.
+- [indicatif](https://github.com/console-rs/indicatif) greatly inspired this
+  project!
+- [spinner](https://github.com/lpil/spinner) is a very cool gleam library to
+  create simple spinners. If you don't need more than that, check them out!
