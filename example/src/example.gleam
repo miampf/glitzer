@@ -3,8 +3,8 @@ import gleam/iterator
 
 import glitzer/progress
 
-@external(erlang, "glitzer_ffi", "sleep")
-@external(javascript, "./glitzer_ffi.mjs", "sleep")
+@external(erlang, "example_ffi", "sleep")
+@external(javascript, "./example_ffi.mjs", "sleep")
 pub fn sleep(ms: Int) -> a
 
 pub fn main() {

@@ -1,4 +1,4 @@
--module(glitzer_ffi).
+-module(example_ffi).
 
 % Public API
 -export([sleep/1]).
