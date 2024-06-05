@@ -1,4 +1,5 @@
 import gleam/io
+import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_builder.{type StringBuilder}
@@ -303,6 +304,14 @@ fn build_progress_fill(
 ) -> StringBuilder {
   let fill = case left_nonempty > 0 {
     True -> {
+      let bar =
+        ProgressStyle(
+          ..bar,
+          state: State(
+            ..bar.state,
+            finished: bar.state.progress >= bar.length + 1,
+          ),
+        )
       case left_nonempty == 1 {
         True -> get_finished_head_fill(fill, bar)
         False -> get_finished_fill(fill, bar)
@@ -354,5 +363,25 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
       )
     // build the unfinished style
     False -> string_builder.append(fill, bar.fill.char)
+  }
+}
+
+pub fn map_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Iterator(b) {
+  iterator.index(i)
+  |> iterator.map(fn(pair) {
+    let #(el, i) = pair
+    map_tick_bar(bar, i)
+    |> fun(el)
+  })
+}
+
+fn map_tick_bar(bar, i) -> ProgressStyle {
+  case i > 0 {
+    True -> map_tick_bar(tick(bar), i - 1)
+    False -> bar
   }
 }
