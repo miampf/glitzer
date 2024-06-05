@@ -67,8 +67,58 @@ in your projects root directory to add the library to your project.
 
 ## Usage
 
-> **[?]** How does one go about using it? Provide various use cases and code
-> examples here.
+You can access the progress bars with `import glitzer/progress`.
+
+### A simple progress bar
+
+```gleam
+import glitzer/progress
+
+fn main() {
+    let bar = 
+        progress.new() 
+        |> progress.with_length(100)
+        |> progress.with_fill(progress.char_from_string("+"))
+        |> progress.with_empty(progress.char_from_string("-"))
+        |> progress.with_left_text("Doing stuff: ")
+    iterator.range(1, 100)
+    |> progress.each_iterator(bar, fn(bar, i) {
+        progress.with_left_text(bar, int.to_string(i) <> " ")
+        |> progress.print_bar
+        // do some other stuff here
+    })
+}
+```
+
+### Progress bar templates
+
+Glitzer also provides some premade templates for progress bars. All of these
+templates have a default length of 100. As an example, here is how you could use
+the `fancy_slim_arrow_bar` template.
+
+```gleam
+import glitzer/progress
+
+fn main() {
+    let bar = progress.fancy_slim_arrow_bar()
+    do_stuff(bar, 0)
+}
+
+fn do_stuff(bar, count) {
+    case count <= 100 {
+       True -> {
+            let bar = progress.tick(bar)
+            progress.print_bar(bar)
+            // some heavy lifting
+            do_stuff(bar, count + 1)
+        }
+       False -> Nil 
+    }
+}
+```
+
+All templates can be found in the
+[documentation](https://hexdocs.pm/glitzer/glitzer/progress.html)
 
 ## Roadmap
 
