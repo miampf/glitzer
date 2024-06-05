@@ -1,0 +1,7 @@
+---
+version: 1.1.6
+title: Test progress.char_from_string (failure)
+file: ./test/glitzer_test.gleam
+test_name: progress_char_from_string_fail_test
+---
+Char("#")

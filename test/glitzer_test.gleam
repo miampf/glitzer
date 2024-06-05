@@ -112,6 +112,13 @@ pub fn progress_with_fill_head_test() {
   |> birdie.snap(title: "Test progress.with_fill_head")
 }
 
+pub fn progress_with_fill_head_finished_test() {
+  progress.new_bar()
+  |> progress.with_fill_finished(progress.char_from_string("#"))
+  |> pprint.format
+  |> birdie.snap(title: "Test progress.with_fill_head_finished")
+}
+
 pub fn progress_with_length_test() {
   progress.new_bar()
   |> progress.with_length(100)

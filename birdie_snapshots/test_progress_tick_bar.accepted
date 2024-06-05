@@ -1,0 +1,17 @@
+---
+version: 1.1.6
+title: Test progress.tick_bar
+file: ./test/glitzer_test.gleam
+test_name: progress_thick_bar_test
+---
+ProgressStyle(
+  "",
+  "",
+  Char("▒"),
+  Char("█"),
+  None,
+  None,
+  None,
+  100,
+  State(0, False),
+)
