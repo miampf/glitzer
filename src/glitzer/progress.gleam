@@ -37,6 +37,7 @@ pub fn char_from_string(from in: String) -> Char {
   }
 }
 
+/// Create a `String` from a given `Char`.
 pub fn string_from_char(from in: Char) -> String {
   in.char
 }
