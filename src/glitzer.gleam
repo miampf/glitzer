@@ -34,10 +34,9 @@ fn do_something_else() {
     |> progress.with_length(10)
 
   iterator.range(0, 10)
-  |> progress.map_iterator(bar, fn(bar, i) {
-    progress.with_left_text(bar, int.to_string(i))
+  |> progress.each_iterator(bar, fn(bar, i) {
+    progress.with_left_text(bar, int.to_string(i) <> " ")
     |> progress.print_bar
     sleep(100)
   })
-  |> iterator.run
 }

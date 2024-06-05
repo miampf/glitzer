@@ -282,9 +282,19 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 /// }
 /// ```
 pub fn print_bar(bar bar: ProgressStyle) {
+  let bar =
+    ProgressStyle(
+      ..bar,
+      state: State(..bar.state, finished: bar.state.progress >= bar.length),
+    )
   let fill =
-    build_progress_fill(string_builder.new(), bar, bar.state.progress, 0)
+    build_progress_fill(string_builder.new(), bar, bar.state.progress + 1, 0)
     |> string_builder.to_string
+
+  let end = case bar.state.finished {
+    True -> "\n"
+    False -> ""
+  }
 
   io.print_error(
     codes.hide_cursor_code
@@ -292,7 +302,8 @@ pub fn print_bar(bar bar: ProgressStyle) {
     <> codes.return_line_start_code
     <> bar.left
     <> fill
-    <> bar.right,
+    <> bar.right
+    <> end,
   )
 }
 
@@ -304,14 +315,6 @@ fn build_progress_fill(
 ) -> StringBuilder {
   let fill = case left_nonempty > 0 {
     True -> {
-      let bar =
-        ProgressStyle(
-          ..bar,
-          state: State(
-            ..bar.state,
-            finished: bar.state.progress >= bar.length + 1,
-          ),
-        )
       case left_nonempty == 1 {
         True -> get_finished_head_fill(fill, bar)
         False -> get_finished_fill(fill, bar)
@@ -391,14 +394,27 @@ pub fn map_iterator(
   iterator.index(i)
   |> iterator.map(fn(pair) {
     let #(el, i) = pair
-    map_tick_bar(bar, i)
+    tick_bar_by_i(bar, i)
     |> fun(el)
   })
 }
 
-fn map_tick_bar(bar, i) -> ProgressStyle {
+fn tick_bar_by_i(bar, i) -> ProgressStyle {
   case i > 0 {
-    True -> map_tick_bar(tick(bar), i - 1)
+    True -> tick_bar_by_i(tick(bar), i - 1)
     False -> bar
   }
+}
+
+pub fn each_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Nil {
+  iterator.index(i)
+  |> iterator.each(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
 }
