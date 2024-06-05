@@ -234,6 +234,15 @@ pub fn with_fill_head(bar bar: ProgressStyle, fill char: Char) -> ProgressStyle 
   ProgressStyle(..bar, fill_head: option.Some(char))
 }
 
+/// Add a head to the progress bar that will be displayed when the bar
+/// finishes.
+pub fn with_fill_head_finished(
+  bar bar: ProgressStyle,
+  fill char: Char,
+) -> ProgressStyle {
+  ProgressStyle(..bar, fill_head_finished: option.Some(char))
+}
+
 /// Add length to a progress bar.
 pub fn with_length(bar bar: ProgressStyle, length len: Int) -> ProgressStyle {
   ProgressStyle(..bar, length: len)
