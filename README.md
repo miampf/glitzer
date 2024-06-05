@@ -143,6 +143,12 @@ If you have any questions, feel free to
 Please note that it may take some time for me to respond. I am not paid for
 doing this and do have a private life (surprise!) :]
 
+If something is very urgent, you may
+[write me an email](mailto:miampf@proton.me). However, only do this if it's
+something major like a security issue or harassement in some discussion of the
+project. Harassement does not mean someone not agreeing with your point of view
+about the project.
+
 ## Project assistance
 
 If you want to say **thank you** or/and support active development of glitzer,
