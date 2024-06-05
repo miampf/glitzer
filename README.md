@@ -34,6 +34,8 @@
 - [Getting Started](#getting-started)
   - [Installation](#installation)
 - [Usage](#usage)
+  - [A simple progress bar](#a-simple-progress-bar)
+  - [Progress bar templates](#progress-bar-templates)
 - [Roadmap](#roadmap)
 - [Support](#support)
 - [Project assistance](#project-assistance)
