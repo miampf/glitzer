@@ -254,6 +254,17 @@ pub fn tick(bar bar: ProgressStyle) -> ProgressStyle {
   }
 }
 
+/// Increase the progress of the bar by `i`.
+pub fn tick_by(bar bar: ProgressStyle, i i: Int) -> ProgressStyle {
+  case i > 0 {
+    True -> {
+      let bar = tick(bar)
+      tick_by(bar, i - 1)
+    }
+    False -> bar
+  }
+}
+
 /// Completely fill the progress bar.
 pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
   ProgressStyle(..bar, state: State(finished: True, progress: bar.length + 1))
