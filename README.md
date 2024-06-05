@@ -8,8 +8,6 @@
 <div align="center">
   glitzer
   <br />
-  <a href="#about"><strong>Explore the screenshots »</strong></a>
-  <br />
   <br />
   <a href="https://github.com/miampf/glitzer/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
@@ -33,7 +31,6 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
-  - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -51,26 +48,11 @@
 
 ## About
 
-> **[?]** Provide general information about your project here. What problem does
-> it (intend to) solve? What is the purpose of your project? Why did you
-> undertake it? You don't have to answer all the questions -- just the ones
-> relevant to your project.
+Glitzer (german for "glitter" or "sparkle") is a library for gleam that helps
+you create progress bars and other fancy progress reporting and command line
+utilities. It is written in pure gleam and supports javascript and erlang.
 
-<details>
-<summary>Screenshots</summary>
-<br>
-
-> **[?]** Please provide your screenshots here.
-
-|                               Home Page                               |                               Login Page                               |
-| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
-
-</details>
-
-### Built With
-
-> **[?]** Please provide the technologies that are used in the project.
+<img src="./docs/images/example.gif" width="100%">
 
 ## Getting Started
 
