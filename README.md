@@ -6,7 +6,7 @@
 </h1>
 
 <div align="center">
-  glitzer
+  glitzer - make your projects :sparkles: sparkle :sparkles:
   <br />
   <br />
   <a href="https://github.com/miampf/glitzer/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
