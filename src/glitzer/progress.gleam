@@ -366,6 +366,23 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
   }
 }
 
+/// Map an iterator to a function with a bar that ticks every run of the
+/// function.
+///
+/// <details>
+/// <summary>Example:<summary>
+///
+/// ```gleam
+/// import glitzer/progress
+///
+/// fn example(bar) {
+///   iterator.range(0, 100)
+///   |> progress.map_iterator(fn(bar, element) {
+///     progress.print_bar(bar)
+///     // do some heavy calculations here >:)
+///   })
+/// }
+/// ```
 pub fn map_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
