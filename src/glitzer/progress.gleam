@@ -37,6 +37,7 @@ pub fn char_from_string(from in: String) -> Char {
   }
 }
 
+/// Create a `String` from a given `Char`.
 pub fn string_from_char(from in: Char) -> String {
   in.char
 }
@@ -251,6 +252,17 @@ pub fn tick(bar bar: ProgressStyle) -> ProgressStyle {
         ..bar,
         state: State(finished: True, progress: bar.state.progress + 1),
       )
+  }
+}
+
+/// Increase the progress of the bar by `i`.
+pub fn tick_by(bar bar: ProgressStyle, i i: Int) -> ProgressStyle {
+  case i > 0 {
+    True -> {
+      let bar = tick(bar)
+      tick_by(bar, i - 1)
+    }
+    False -> bar
   }
 }
 
