@@ -1,7 +1,7 @@
 <h1 align="center">
   <a href="https://github.com/miampf/glitzer">
     <!-- Please provide path to your logo here -->
-    <img src="docs/images/logo.svg" alt="Logo" width="100" height="100">
+    <img src="https://raw.githubusercontent.com/miampf/glitzer/main/docs/images/logo.svg" alt="Logo" width="100" height="100">
   </a>
 </h1>
 
@@ -53,7 +53,7 @@ Glitzer (german for "glitter" or "sparkle") is a library for gleam that helps
 you create progress bars and other fancy progress reporting and command line
 utilities. It is written in pure gleam and supports javascript and erlang.
 
-<img src="./docs/images/example.gif" width="100%">
+<img src="https://raw.githubusercontent.com/miampf/glitzer/main/docs/images/example.gif" width="100%">
 
 ## Getting Started
 
