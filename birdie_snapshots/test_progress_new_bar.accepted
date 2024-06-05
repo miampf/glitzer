@@ -1,0 +1,17 @@
+---
+version: 1.1.6
+title: Test progress.new_bar
+file: ./test/glitzer_test.gleam
+test_name: progress_new_bar_test
+---
+ProgressStyle(
+  "",
+  "",
+  Char(" "),
+  Char(" "),
+  None,
+  None,
+  None,
+  0,
+  State(0, False),
+)
