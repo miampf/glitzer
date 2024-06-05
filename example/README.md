@@ -1,25 +1,6 @@
-# example
+# Glitzer example
 
-[![Package Version](https://img.shields.io/hexpm/v/example)](https://hex.pm/packages/example)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/example/)
+This is a tiny example project for glitzer.
 
-```sh
-gleam add example
-```
-```gleam
-import example
-
-pub fn main() {
-  // TODO: An example of the project in use
-}
-```
-
-Further documentation can be found at <https://hexdocs.pm/example>.
-
-## Development
-
-```sh
-gleam run   # Run the project
-gleam test  # Run the tests
-gleam shell # Run an Erlang shell
-```
+(Please note that the ffi only exists because I use sleeping to simulate hard
+work in this example. No ffi is needed to use glitzer)
