@@ -74,11 +74,14 @@ You can access the progress bars with `import glitzer/progress`.
 ### A simple progress bar
 
 ```gleam
+import gleam/int
+import gleam/iterator
+
 import glitzer/progress
 
-fn main() {
+pub fn main() {
     let bar = 
-        progress.new() 
+        progress.new_bar() 
         |> progress.with_length(100)
         |> progress.with_fill(progress.char_from_string("+"))
         |> progress.with_empty(progress.char_from_string("-"))
@@ -101,13 +104,13 @@ the `fancy_slim_arrow_bar` template.
 ```gleam
 import glitzer/progress
 
-fn main() {
+pub fn main() {
     let bar = progress.fancy_slim_arrow_bar()
     do_stuff(bar, 0)
 }
 
 fn do_stuff(bar, count) {
-    case count <= 100 {
+    case count < 100 {
        True -> {
             let bar = progress.tick(bar)
             progress.print_bar(bar)
