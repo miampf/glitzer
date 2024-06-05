@@ -32,7 +32,6 @@
 
 - [About](#about)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
@@ -56,13 +55,15 @@ utilities. It is written in pure gleam and supports javascript and erlang.
 
 ## Getting Started
 
-### Prerequisites
-
-> **[?]** What are the project requirements/dependencies?
-
 ### Installation
 
-> **[?]** Describe how to install and get started with the project.
+Simply run
+
+```sh
+gleam add glitzer
+```
+
+in your projects root directory to add the library to your project.
 
 ## Usage
 
