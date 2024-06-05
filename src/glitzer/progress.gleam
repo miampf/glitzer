@@ -17,7 +17,7 @@ pub opaque type Char {
 /// the strings length is equal to one and a `Char` of "#" otherwise.
 ///
 /// <details>
-/// <summary>Example:<summary>
+/// <summary>Example:</summary>
 ///
 /// ```gleam
 /// import glitzer/progress
@@ -26,6 +26,8 @@ pub opaque type Char {
 ///   let char = progress.char_from_string("A")
 /// }
 /// ```
+///
+/// </details>
 pub fn char_from_string(from in: String) -> Char {
   let len = string.length(in)
 
@@ -161,7 +163,7 @@ pub fn fancy_thick_bar() -> ProgressStyle {
 /// Create a new (completely empty) progress bar.
 ///
 /// <details>
-/// <summary>Example:<summary>
+/// <summary>Example:</summary>
 ///
 /// ```gleam
 /// import glitzer/progress
@@ -174,6 +176,8 @@ pub fn fancy_thick_bar() -> ProgressStyle {
 ///     |> progress.with_fill(progress.char_from_string("+"))
 /// }
 /// ```
+///
+/// </details>
 pub fn new_bar() -> ProgressStyle {
   ProgressStyle(
     left: "",
@@ -258,7 +262,7 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 /// Print the progress bar to stderr.
 ///
 /// <details>
-/// <summary>Example:<summary>
+/// <summary>Example:</summary>
 ///
 /// ```gleam
 /// import glitzer/progress
@@ -281,6 +285,8 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 ///   }
 /// }
 /// ```
+///
+/// </details>
 pub fn print_bar(bar bar: ProgressStyle) {
   let bar =
     ProgressStyle(
@@ -373,7 +379,7 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
 /// function.
 ///
 /// <details>
-/// <summary>Example:<summary>
+/// <summary>Example:</summary>
 ///
 /// ```gleam
 /// import glitzer/progress
@@ -386,6 +392,8 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
 ///   })
 /// }
 /// ```
+///
+/// </details>
 pub fn map_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
