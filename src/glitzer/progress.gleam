@@ -26,6 +26,8 @@ pub opaque type Char {
 ///   let char = progress.char_from_string("A")
 /// }
 /// ```
+///
+/// </details>
 pub fn char_from_string(from in: String) -> Char {
   let len = string.length(in)
 
@@ -174,6 +176,8 @@ pub fn fancy_thick_bar() -> ProgressStyle {
 ///     |> progress.with_fill(progress.char_from_string("+"))
 /// }
 /// ```
+///
+/// </details>
 pub fn new_bar() -> ProgressStyle {
   ProgressStyle(
     left: "",
@@ -281,6 +285,8 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 ///   }
 /// }
 /// ```
+///
+/// </details>
 pub fn print_bar(bar bar: ProgressStyle) {
   let bar =
     ProgressStyle(
@@ -386,6 +392,8 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
 ///   })
 /// }
 /// ```
+///
+/// </details>
 pub fn map_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
