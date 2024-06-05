@@ -25,8 +25,8 @@
 
 [![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/miampf/glitzer/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![code with love by miampf](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-miampf-ff1414.svg?style=flat-square)](https://github.com/miampf)
-[![Package Version](https://img.shields.io/hexpm/v/glitzer)](https://hex.pm/packages/glitzer)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3)](https://hexdocs.pm/glitzer/)
+[![Package Version](https://img.shields.io/hexpm/v/glitzer?style=flat-square)](https://hex.pm/packages/glitzer)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-ffaff3?style=flat-square)](https://hexdocs.pm/glitzer/)
 
 </div>
 
