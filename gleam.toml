@@ -1,5 +1,7 @@
 name = "glitzer"
 version = "1.0.0"
+description = "Progress bars and other fancy stuff for CLI tools."
+licenses = ["GPL-3.0"]
 
 # Fill out these fields if you intend to generate HTML documentation or publish
 # your project to the Hex package manager.
