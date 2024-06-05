@@ -1,4 +1,5 @@
 import gleam/io
+import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_builder.{type StringBuilder}
@@ -281,9 +282,19 @@ pub fn finish(bar bar: ProgressStyle) -> ProgressStyle {
 /// }
 /// ```
 pub fn print_bar(bar bar: ProgressStyle) {
+  let bar =
+    ProgressStyle(
+      ..bar,
+      state: State(..bar.state, finished: bar.state.progress >= bar.length),
+    )
   let fill =
-    build_progress_fill(string_builder.new(), bar, bar.state.progress, 0)
+    build_progress_fill(string_builder.new(), bar, bar.state.progress + 1, 0)
     |> string_builder.to_string
+
+  let end = case bar.state.finished {
+    True -> "\n"
+    False -> ""
+  }
 
   io.print_error(
     codes.hide_cursor_code
@@ -291,7 +302,8 @@ pub fn print_bar(bar bar: ProgressStyle) {
     <> codes.return_line_start_code
     <> bar.left
     <> fill
-    <> bar.right,
+    <> bar.right
+    <> end,
   )
 }
 
@@ -355,4 +367,70 @@ fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
     // build the unfinished style
     False -> string_builder.append(fill, bar.fill.char)
   }
+}
+
+/// Map an iterator to a function with a bar that ticks every run of the
+/// function.
+///
+/// <details>
+/// <summary>Example:<summary>
+///
+/// ```gleam
+/// import glitzer/progress
+///
+/// fn example(bar) {
+///   iterator.range(0, 100)
+///   |> progress.map_iterator(fn(bar, element) {
+///     progress.print_bar(bar)
+///     // do some heavy calculations here >:)
+///   })
+/// }
+/// ```
+pub fn map_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Iterator(b) {
+  iterator.index(i)
+  |> iterator.map(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
+}
+
+fn tick_bar_by_i(bar, i) -> ProgressStyle {
+  case i > 0 {
+    True -> tick_bar_by_i(tick(bar), i - 1)
+    False -> bar
+  }
+}
+
+pub fn map2_iterator(
+  iterator1 i1: Iterator(a),
+  iterator2 i2: Iterator(b),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a, b) -> c,
+) -> Iterator(c) {
+  iterator.zip(i1, i2)
+  |> iterator.index
+  |> iterator.map(fn(pair) {
+    let #(pair, i) = pair
+    let #(el1, el2) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el1, el2)
+  })
+}
+
+pub fn each_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Nil {
+  iterator.index(i)
+  |> iterator.each(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
 }
