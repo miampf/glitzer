@@ -1,8 +1,10 @@
 import glitzer/spinner
 
 pub fn main() {
-  spinner.default_spinner()
-  |> spinner.continuous_tick_print
+  let s =
+    spinner.default_spinner()
+    |> spinner.continuous_tick_print
+  spinner.with_left_text(s, "He: ")
   do(0)
 }
 
