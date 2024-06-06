@@ -30,7 +30,9 @@ pub fn frames_from_list(frames frames: List(String)) -> Frames {
 
 pub fn default_spinner() -> SpinnerStyle {
   // block codes for a "pulsating" spinner
-  let frames = ["\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}"]
+  let frames = [
+    "\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}", "\u{2593}", "\u{2592}",
+  ]
   SpinnerStyle(
     frames: frames_from_list(frames),
     left_text: "",
