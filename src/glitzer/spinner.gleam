@@ -35,6 +35,8 @@ pub fn frames_from_list(frames frames: List(String)) -> Frames {
   Frames(frames: glearray.from_list(frames))
 }
 
+// SECTION: spinner presets
+
 /// The default, pulsating spinner.
 pub fn default_spinner() -> SpinnerStyle {
   // ansi codes for a "pulsating" spinner
@@ -54,6 +56,28 @@ pub fn default_spinner() -> SpinnerStyle {
     ),
   )
 }
+
+pub fn bar_up_down_spinner() -> SpinnerStyle {
+  let frames = [
+    "\u{2581}", "\u{2582}", "\u{2583}", "\u{2584}", "\u{2585}", "\u{2586}",
+    "\u{2587}", "\u{2588}", "\u{2587}", "\u{2586}", "\u{2585}", "\u{2584}",
+    "\u{2583}", "\u{2582}",
+  ]
+  SpinnerStyle(
+    frames: frames_from_list(frames),
+    tick_rate: 100,
+    finish_text: "",
+    state: State(
+      progress: 0,
+      left_text: "",
+      right_text: "",
+      finished: False,
+      repeater: option.None,
+    ),
+  )
+}
+
+// ENDSECTION: spinner presets
 
 /// Set the left text of the spinner.
 pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
@@ -125,9 +149,9 @@ pub fn tick_by(spinner s: SpinnerStyle, i i: Int) {
 /// </details>
 pub fn continuous_tick_print(spinner s: SpinnerStyle) -> SpinnerStyle {
   let repeater =
-    repeatedly.call(s.tick_rate, s.state, fn(state, i) {
+    repeatedly.call(s.tick_rate, s.state, fn(state, _) {
       let s = SpinnerStyle(..s, state: state)
-      tick_by(s, i)
+      tick(s)
       |> print_spinner
       state
     })
