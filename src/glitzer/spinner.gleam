@@ -60,6 +60,7 @@ pub fn default_spinner() -> SpinnerStyle {
   new_spinner(frames_from_list(frames))
 }
 
+/// A spinner with a bar that goes up and down.
 pub fn bar_up_down_spinner() -> SpinnerStyle {
   let frames = [
     "\u{2581}", "\u{2582}", "\u{2583}", "\u{2584}", "\u{2585}", "\u{2586}",
@@ -69,9 +70,29 @@ pub fn bar_up_down_spinner() -> SpinnerStyle {
   new_spinner(frames_from_list(frames))
 }
 
+/// A spinner that pulsates.
 pub fn pulsating_spinnner() -> SpinnerStyle {
   let frames = [
     "\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}", "\u{2593}", "\u{2592}",
+  ]
+  new_spinner(frames_from_list(frames))
+}
+
+/// A spinner that goes from left to right and back.
+pub fn bar_left_right_spinner() -> SpinnerStyle {
+  let frames = [
+    "\u{258f}", "\u{258e}", "\u{258d}", "\u{258c}", "\u{258b}", "\u{258a}",
+    "\u{2589}", "\u{2588}", "\u{2589}", "\u{258a}", "\u{258b}", "\u{258c}",
+    "\u{258d}", "\u{258e}",
+  ]
+  new_spinner(frames_from_list(frames))
+}
+
+/// A spinner that actually spins.
+pub fn spinning_spinner() -> SpinnerStyle {
+  let frames = [
+    "\u{28fe}", "\u{28f7}", "\u{28ef}", "\u{28df}", "\u{287f}", "\u{28bf}",
+    "\u{28fb}", "\u{28fd}",
   ]
   new_spinner(frames_from_list(frames))
 }

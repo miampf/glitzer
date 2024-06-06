@@ -2,7 +2,7 @@ import glitzer/spinner
 
 pub fn main() {
   let s =
-    spinner.default_spinner()
+    spinner.spinning_spinner()
     |> spinner.with_finish_text("Hehe >:3")
     |> spinner.continuous_tick_print
   spinner.with_left_text(s, "He: ")
