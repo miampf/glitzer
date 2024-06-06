@@ -67,7 +67,12 @@ pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
 
 /// Set the right text of the spinner.
 pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
-  SpinnerStyle(..s, state: State(..s.state, right_text: t))
+  let s = SpinnerStyle(..s, state: State(..s.state, right_text: t))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
 }
 
 /// Set the spinners tick rate in milliseconds.
@@ -82,12 +87,24 @@ pub fn with_finish_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle
 
 /// Progress the spinner by one.
 pub fn tick(spinner s: SpinnerStyle) -> SpinnerStyle {
-  SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + 1))
+  let s =
+    SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + 1))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
 }
 
 /// Progress the spinner by `i`.
 pub fn tick_by(spinner s: SpinnerStyle, i i: Int) {
-  SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + i))
+  let s =
+    SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + i))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
 }
 
 /// Continuously tick and print the spinner. Note that this **does not** update

@@ -5,6 +5,7 @@ import birdie
 import pprint
 
 import glitzer/progress
+import glitzer/spinner
 
 pub fn main() {
   gleeunit.main()
@@ -163,4 +164,58 @@ pub fn progress_map2_iterator_test() {
   progress.map2_iterator(i1, i2, bar, fn(_, _, _) { progress.print_bar(bar) })
   |> pprint.format
   |> birdie.snap(title: "Test progress.map2_iterator")
+}
+
+pub fn spinner_frames_from_list_test() {
+  spinner.frames_from_list(["a", "b", "c"])
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.frames_from_list")
+}
+
+pub fn spinner_default_spinner_test() {
+  spinner.default_spinner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.default_spinner")
+}
+
+pub fn spinner_with_left_text_test() {
+  spinner.default_spinner()
+  |> spinner.with_left_text("asdf")
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_left_text")
+}
+
+pub fn spinner_with_right_text_test() {
+  spinner.default_spinner()
+  |> spinner.with_right_text("asdf")
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_right_text")
+}
+
+pub fn spinner_with_tick_rate_test() {
+  spinner.default_spinner()
+  |> spinner.with_tick_rate(10)
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_tick_rate")
+}
+
+pub fn spinner_with_finish_text_test() {
+  spinner.default_spinner()
+  |> spinner.with_finish_text("asdf")
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_finish_text")
+}
+
+pub fn spinner_tick_test() {
+  spinner.default_spinner()
+  |> spinner.tick()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.tick")
+}
+
+pub fn spinner_tick_by_test() {
+  spinner.default_spinner()
+  |> spinner.tick_by(10)
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.tick_by")
 }
