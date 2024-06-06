@@ -5,7 +5,7 @@ file: ./test/glitzer_test.gleam
 test_name: spinner_tick_test
 ---
 SpinnerStyle(
-  Frames(#("░", "▒", "▓", "█", "▓", "▒")),
+  Frames(#("|", "/", "-", "\")),
   100,
   "",
   State("", "", 1, False, None),

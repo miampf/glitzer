@@ -35,16 +35,10 @@ pub fn frames_from_list(frames frames: List(String)) -> Frames {
   Frames(frames: glearray.from_list(frames))
 }
 
-// SECTION: spinner presets
-
-/// The default, pulsating spinner.
-pub fn default_spinner() -> SpinnerStyle {
-  // ansi codes for a "pulsating" spinner
-  let frames = [
-    "\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}", "\u{2593}", "\u{2592}",
-  ]
+/// Create a new spinner from `Frames` with a 100ms tick rate.
+pub fn new_spinner(frames f: Frames) -> SpinnerStyle {
   SpinnerStyle(
-    frames: frames_from_list(frames),
+    frames: f,
     tick_rate: 100,
     finish_text: "",
     state: State(
@@ -57,24 +51,29 @@ pub fn default_spinner() -> SpinnerStyle {
   )
 }
 
+// SECTION: spinner presets
+
+/// The default spinner.
+pub fn default_spinner() -> SpinnerStyle {
+  // ansi codes for a "pulsating" spinner
+  let frames = ["|", "/", "-", "\\"]
+  new_spinner(frames_from_list(frames))
+}
+
 pub fn bar_up_down_spinner() -> SpinnerStyle {
   let frames = [
     "\u{2581}", "\u{2582}", "\u{2583}", "\u{2584}", "\u{2585}", "\u{2586}",
     "\u{2587}", "\u{2588}", "\u{2587}", "\u{2586}", "\u{2585}", "\u{2584}",
     "\u{2583}", "\u{2582}",
   ]
-  SpinnerStyle(
-    frames: frames_from_list(frames),
-    tick_rate: 100,
-    finish_text: "",
-    state: State(
-      progress: 0,
-      left_text: "",
-      right_text: "",
-      finished: False,
-      repeater: option.None,
-    ),
-  )
+  new_spinner(frames_from_list(frames))
+}
+
+pub fn pulsating_spinnner() -> SpinnerStyle {
+  let frames = [
+    "\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}", "\u{2593}", "\u{2592}",
+  ]
+  new_spinner(frames_from_list(frames))
 }
 
 // ENDSECTION: spinner presets
