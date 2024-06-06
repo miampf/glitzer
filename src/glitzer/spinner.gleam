@@ -134,6 +134,8 @@ pub fn finish(spinner s: SpinnerStyle) -> SpinnerStyle {
   SpinnerStyle(..s, state: State(..s.state, finished: True))
 }
 
+/// Print the spinner. This is useful if you need/want manual control over your
+/// spinner ticks and prints.
 pub fn print_spinner(spinner s: SpinnerStyle) -> Nil {
   io.print(
     codes.hide_cursor_code
