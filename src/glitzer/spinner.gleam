@@ -7,7 +7,7 @@ import repeatedly.{type Repeater}
 import glitzer/codes
 
 pub opaque type State {
-  State(progress: Int, finished: Bool, repeater: Option(Repeater(Nil)))
+  State(progress: Int, finished: Bool, repeater: Option(Repeater(SpinnerStyle)))
 }
 
 pub opaque type Frames {
@@ -24,10 +24,12 @@ pub opaque type SpinnerStyle {
   )
 }
 
+/// Convert a given list of `String` to `Frames`.
 pub fn frames_from_list(frames frames: List(String)) -> Frames {
   Frames(frames: glearray.from_list(frames))
 }
 
+/// The default, pulsating spinner.
 pub fn default_spinner() -> SpinnerStyle {
   // block codes for a "pulsating" spinner
   let frames = [
@@ -42,29 +44,50 @@ pub fn default_spinner() -> SpinnerStyle {
   )
 }
 
+/// Set the left text of the spinner.
 pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   SpinnerStyle(..s, left_text: t)
 }
 
+/// Set the right text of the spinner.
 pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   SpinnerStyle(..s, right_text: t)
 }
 
+/// Set the spinners tick rate in milliseconds.
 pub fn with_tick_rate(spinner s: SpinnerStyle, ms ms: Int) -> SpinnerStyle {
   SpinnerStyle(..s, tick_rate: ms)
 }
 
+/// Progress the spinner by one.
 pub fn tick(spinner s: SpinnerStyle) -> SpinnerStyle {
   SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + 1))
 }
 
+/// Progress the spinner by `i`.
 pub fn tick_by(spinner s: SpinnerStyle, i i: Int) {
   SpinnerStyle(..s, state: State(..s.state, progress: s.state.progress + i))
 }
 
+/// Continuously tick and print the spinner. Note that this **does not** update
+/// the tick value of your spinner reference!
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+/// import glitzer/spinner
+///
+/// fn example() {
+///   spinner.default_spinner()
+///   |> spinner.continuous_tick_print
+/// }
+/// ```
+///
+/// </details>
 pub fn continuous_tick_print(spinner s: SpinnerStyle) -> SpinnerStyle {
   let repeater =
-    repeatedly.call(s.tick_rate, Nil, fn(_, i) {
+    repeatedly.call(s.tick_rate, s, fn(_, i) {
       tick_by(s, i)
       |> print_spinner
     })
