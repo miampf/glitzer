@@ -6,6 +6,7 @@ import repeatedly.{type Repeater}
 
 import glitzer/codes
 
+/// Contains everything that might get changed during runtime.
 pub opaque type State {
   State(
     left_text: String,
@@ -21,7 +22,12 @@ pub opaque type Frames {
 }
 
 pub opaque type SpinnerStyle {
-  SpinnerStyle(frames: Frames, tick_rate: Int, state: State)
+  SpinnerStyle(
+    frames: Frames,
+    tick_rate: Int,
+    finish_text: String,
+    state: State,
+  )
 }
 
 /// Convert a given list of `String` to `Frames`.
@@ -38,6 +44,7 @@ pub fn default_spinner() -> SpinnerStyle {
   SpinnerStyle(
     frames: frames_from_list(frames),
     tick_rate: 100,
+    finish_text: "",
     state: State(
       progress: 0,
       left_text: "",
@@ -66,6 +73,11 @@ pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle 
 /// Set the spinners tick rate in milliseconds.
 pub fn with_tick_rate(spinner s: SpinnerStyle, ms ms: Int) -> SpinnerStyle {
   SpinnerStyle(..s, tick_rate: ms)
+}
+
+/// Set the spinners finish text.
+pub fn with_finish_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
+  SpinnerStyle(..s, finish_text: t)
 }
 
 /// Progress the spinner by one.
@@ -103,6 +115,23 @@ pub fn continuous_tick_print(spinner s: SpinnerStyle) -> SpinnerStyle {
       state
     })
   SpinnerStyle(..s, state: State(..s.state, repeater: option.Some(repeater)))
+}
+
+/// Finish a spinner. If it was countinously ticking, the ticking will be
+/// stopped. The line will be cleared and the finish text will be printed if
+/// the spinner had some.
+pub fn finish(spinner s: SpinnerStyle) -> SpinnerStyle {
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.stop(repeater)
+    option.None -> Nil
+  }
+  io.println(
+    codes.hide_cursor_code
+    <> codes.clear_line_code
+    <> codes.return_line_start_code
+    <> s.finish_text,
+  )
+  SpinnerStyle(..s, state: State(..s.state, finished: True))
 }
 
 pub fn print_spinner(spinner s: SpinnerStyle) -> Nil {
