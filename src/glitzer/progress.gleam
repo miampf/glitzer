@@ -127,6 +127,7 @@ pub fn fancy_slim_arrow_bar() -> ProgressStyle {
   )
 }
 
+/// Create and return a thick bar.
 pub fn thick_bar() -> ProgressStyle {
   let sym = "\u{2588}"
   let empty_sym = "\u{2592}"
@@ -143,6 +144,7 @@ pub fn thick_bar() -> ProgressStyle {
   )
 }
 
+/// Create and return a fancy thick bar.
 pub fn fancy_thick_bar() -> ProgressStyle {
   let sym = "\u{2588}"
   let empty_sym = "\u{2592}"
