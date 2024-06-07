@@ -185,9 +185,9 @@ pub fn spinner_bar_up_down_spinner_test() {
 }
 
 pub fn spinner_pulsating_spinner_test() {
-  spinner.pulsating_spinnner()
+  spinner.pulsating_spinner()
   |> pprint.format
-  |> birdie.snap(title: "Test spinner.pulsating_spinnner")
+  |> birdie.snap(title: "Test spinner.pulsating_spinner")
 }
 
 pub fn spinner_bar_left_right_spinner_test() {

@@ -97,7 +97,7 @@ pub fn bar_up_down_spinner() -> SpinnerStyle {
 }
 
 /// A spinner that pulsates.
-pub fn pulsating_spinnner() -> SpinnerStyle {
+pub fn pulsating_spinner() -> SpinnerStyle {
   let frames = [
     "\u{2591}", "\u{2592}", "\u{2593}", "\u{2588}", "\u{2593}", "\u{2592}",
   ]
