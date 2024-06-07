@@ -57,7 +57,6 @@ pub fn new_spinner(frames f: Frames) -> SpinnerStyle {
 
 /// The default spinner.
 pub fn default_spinner() -> SpinnerStyle {
-  // ansi codes for a "pulsating" spinner
   let frames = ["|", "/", "-", "\\"]
   new_spinner(frames_from_list(frames))
 }
@@ -212,6 +211,8 @@ pub fn spin(spinner s: SpinnerStyle) -> SpinnerStyle {
       state
     })
   SpinnerStyle(..s, state: State(..s.state, repeater: option.Some(repeater)))
+  |> tick
+  // starts the spinner. tbh I don't exactly know why this is needed
 }
 
 /// Finish a spinner. If it was countinously ticking, the ticking will be
