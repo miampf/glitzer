@@ -1,3 +1,52 @@
+/// Lines that go forward like little snakes :333
+///
+/// To create a new progress bar use [`new_bar`](#new_bar) or one of the
+/// premade templates (named `<TEMPLATENAME>_bar`) :)
+///
+/// Example:
+///
+/// ```gleam
+/// import gleam/int
+/// import gleam/iterator
+/// 
+/// import glitzer/progress
+/// 
+/// pub fn main() {
+///     let bar = 
+///         progress.new_bar() 
+///         |> progress.with_length(100)
+///         |> progress.with_fill(progress.char_from_string("+"))
+///         |> progress.with_empty(progress.char_from_string("-"))
+///         |> progress.with_left_text("Doing stuff: ")
+///     iterator.range(1, 100)
+///     |> progress.each_iterator(bar, fn(bar, i) {
+///         progress.with_left_text(bar, int.to_string(i) <> " ")
+///         |> progress.print_bar
+///         // do some other stuff here
+///     })
+/// }
+/// ```
+///
+/// ```gleam
+/// import glitzer/progress
+/// 
+/// pub fn main() {
+///     let bar = progress.fancy_slim_arrow_bar()
+///     do_stuff(bar, 0)
+/// }
+/// 
+/// fn do_stuff(bar, count) {
+///     case count < 100 {
+///        True -> {
+///             let bar = progress.tick(bar)
+///             progress.print_bar(bar)
+///             // some heavy lifting
+///             do_stuff(bar, count + 1)
+///         }
+///        False -> Nil 
+///     }
+/// }
+/// ```
 import gleam/io
 import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}

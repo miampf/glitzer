@@ -1,3 +1,28 @@
+/// Spinners! They make the world go round!
+///
+/// To create a spinner, use [`new_spinner`](#new_spinner), or use one of the
+/// templates (named `<TEMPLATENAME>_spinner`) :3.
+///
+/// Example:
+///
+/// ```gleam
+/// import glitzer/spinner
+/// 
+/// pub fn main() {
+///   let s =
+///     spinner.default_spinner()
+///     |> spinner.with_left_text("Imma spin >:3 ")
+///     |> spinner.with_finish_text("I'm dizzy")
+///     |> spinner.spin // this will continuously spin your spinner
+/// 
+///     // do some stuff
+///     
+///     // update the text
+///     spinner.with_left_text(s, "Now imma spin some more :] ")
+/// 
+///     spinner.finish(s) // clear the line and print the finish text
+/// }
+/// ```
 import gleam/io
 import gleam/option.{type Option}
 
