@@ -1,6 +1,8 @@
 import gleam/io
 import gleam/option.{type Option}
 
+import gleam_community/ansi
+import gleam_community/colour
 import glearray.{type Array}
 import repeatedly.{type Repeater}
 
@@ -95,6 +97,40 @@ pub fn spinning_spinner() -> SpinnerStyle {
     "\u{28fb}", "\u{28fd}",
   ]
   new_spinner(frames_from_list(frames))
+}
+
+/// A very colorful spinner with the colors from the progress pride flag :3
+/// Note that this spinner has a tick rate of 200 instead of 100 to not flash
+/// to fast.
+pub fn prideful_spinner() -> SpinnerStyle {
+  let assert Ok(black) = colour.from_rgb255(0, 0, 0)
+  let assert Ok(brown) = colour.from_rgb255(97, 57, 21)
+  let assert Ok(blue) = colour.from_rgb255(116, 215, 238)
+  let assert Ok(pink) = colour.from_rgb255(255, 175, 200)
+  let assert Ok(white) = colour.from_rgb255(255, 255, 255)
+  let assert Ok(violet) = colour.from_rgb255(115, 41, 130)
+  let assert Ok(indigo) = colour.from_rgb255(36, 64, 142)
+  let assert Ok(green) = colour.from_rgb255(0, 128, 38)
+  let assert Ok(yellow) = colour.from_rgb255(255, 237, 0)
+  let assert Ok(orange) = colour.from_rgb255(255, 140, 0)
+  let assert Ok(red) = colour.from_rgb255(228, 3, 3)
+
+  let frames = [
+    ansi.color("\u{2591}", black),
+    ansi.color("\u{2592}", brown),
+    ansi.color("\u{2593}", blue),
+    ansi.color("\u{2588}", pink),
+    ansi.color("\u{2593}", white),
+    ansi.color("\u{2592}", violet),
+    ansi.color("\u{2591}", indigo),
+    ansi.color("\u{2592}", green),
+    ansi.color("\u{2593}", yellow),
+    ansi.color("\u{2588}", orange),
+    ansi.color("\u{2593}", red),
+  ]
+
+  new_spinner(frames_from_list(frames))
+  |> with_tick_rate(200)
 }
 
 // ENDSECTION: spinner presets
