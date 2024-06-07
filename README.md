@@ -136,7 +136,7 @@ pub fn main() {
   let s =
     spinner.default_spinner()
     |> spinner.with_left_text("Imma spin >:3 ")
-    |> spinner.with_finish_text("I'm dizzy")
+    |> spinner.with_finish_text("I'm dizzy :(")
     |> spinner.spin // this will continuously spin your spinner
 
     // do some stuff

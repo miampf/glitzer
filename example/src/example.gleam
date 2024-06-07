@@ -2,6 +2,7 @@ import gleam/int
 import gleam/iterator
 
 import glitzer/progress
+import glitzer/spinner
 
 @external(erlang, "example_ffi", "sleep")
 @external(javascript, "./example_ffi.mjs", "sleep")
@@ -30,16 +31,15 @@ fn do_something(bar, count) {
 }
 
 fn do_something_else() {
-  let bar =
-    progress.fancy_slim_arrow_bar()
-    |> progress.with_length(100)
+  let s =
+    spinner.pulsating_spinner()
+    |> spinner.with_left_text("Imma spin >:3 ")
+    |> spinner.with_finish_text("I'm dizzy :(")
+    |> spinner.spin
 
-  iterator.range(0, 100)
-  |> progress.each_iterator(bar, fn(bar, i) {
-    progress.with_left_text(bar, int.to_string(i) <> " ")
-    |> progress.print_bar
-    sleep(30)
-  })
+  sleep(3000)
+
+  spinner.finish(s)
 }
 
 fn do_cool_shit_with_2_it() {
