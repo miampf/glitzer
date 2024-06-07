@@ -32,7 +32,7 @@ fn do_something(bar, count) {
 
 fn do_something_else() {
   let s =
-    spinner.pulsating_spinner()
+    spinner.spinning_spinner()
     |> spinner.with_left_text("Imma spin >:3 ")
     |> spinner.with_finish_text("I'm dizzy :(")
     |> spinner.spin
@@ -44,7 +44,7 @@ fn do_something_else() {
 
 fn do_cool_shit_with_2_it() {
   let bar =
-    progress.default_bar()
+    progress.fancy_slim_arrow_bar()
     |> progress.with_length(100)
   let i1 = iterator.range(0, 100)
   let i2 = iterator.range(100, 200)
