@@ -198,12 +198,12 @@ pub fn tick_by(spinner s: SpinnerStyle, i i: Int) {
 ///
 /// fn example() {
 ///   spinner.default_spinner()
-///   |> spinner.continuous_tick_print
+///   |> spinner.spin
 /// }
 /// ```
 ///
 /// </details>
-pub fn continuous_tick_print(spinner s: SpinnerStyle) -> SpinnerStyle {
+pub fn spin(spinner s: SpinnerStyle) -> SpinnerStyle {
   let repeater =
     repeatedly.call(s.tick_rate, s.state, fn(state, _) {
       let s = SpinnerStyle(..s, state: state)

@@ -4,7 +4,7 @@ pub fn main() {
   let s =
     spinner.prideful_spinner()
     |> spinner.with_finish_text("Hehe >:3")
-    |> spinner.continuous_tick_print
+    |> spinner.spin
   spinner.with_left_text(s, "He: ")
   do(0)
   spinner.finish(s)
