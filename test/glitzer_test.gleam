@@ -178,6 +178,36 @@ pub fn spinner_default_spinner_test() {
   |> birdie.snap(title: "Test spinner.default_spinner")
 }
 
+pub fn spinner_bar_up_down_spinner_test() {
+  spinner.bar_up_down_spinner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.bar_up_down_spinner")
+}
+
+pub fn spinner_pulsating_spinner_test() {
+  spinner.pulsating_spinnner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.pulsating_spinnner")
+}
+
+pub fn spinner_bar_left_right_spinner_test() {
+  spinner.bar_left_right_spinner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.bar_left_right_spinner")
+}
+
+pub fn spinner_spinning_spinner_test() {
+  spinner.spinning_spinner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.spinning_spinner")
+}
+
+pub fn spinner_prideful_spinner_test() {
+  spinner.prideful_spinner()
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.prideful_spinner")
+}
+
 pub fn spinner_with_left_text_test() {
   spinner.default_spinner()
   |> spinner.with_left_text("asdf")
