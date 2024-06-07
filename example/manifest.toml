@@ -6,12 +6,14 @@ packages = [
   { name = "gleam_community_colour", version = "1.4.0", build_tools = ["gleam"], requirements = ["gleam_json", "gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "795964217EBEDB3DA656F5EB8F67D7AD22872EB95182042D3E7AFEF32D3FD2FE" },
   { name = "gleam_json", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib", "thoas"], otp_app = "gleam_json", source = "hex", outer_checksum = "9063D14D25406326C0255BDA0021541E797D8A7A12573D849462CAFED459F6EB" },
   { name = "gleam_stdlib", version = "0.38.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "663CF11861179AF415A625307447775C09404E752FF99A24E2057C835319F1BE" },
+  { name = "glearray", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "glearray", source = "hex", outer_checksum = "B99767A9BC63EF9CC8809F66C7276042E5EFEACAA5B25188B552D3691B91AC6D" },
   { name = "gleeunit", version = "1.1.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "72CDC3D3F719478F26C4E2C5FED3E657AC81EC14A47D2D2DEBB8693CA3220C3B" },
-  { name = "glitzer", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_community_ansi", "gleam_stdlib"], otp_app = "glitzer", source = "hex", outer_checksum = "349489204217589D1E3133AEF8F8BB828409CA53DD82904268777C44D278B612" },
+  { name = "glitzer", version = "1.1.1", build_tools = ["gleam"], requirements = ["gleam_community_ansi", "gleam_community_colour", "gleam_stdlib", "glearray", "repeatedly"], otp_app = "glitzer", source = "hex", outer_checksum = "7EB486050AD5A89E14DD6F89798A69103EA4245767A599CB9AF25E357A48AB46" },
+  { name = "repeatedly", version = "2.1.1", build_tools = ["gleam"], requirements = [], otp_app = "repeatedly", source = "hex", outer_checksum = "38808C3EC382B0CD981336D5879C24ECB37FCB9C1D1BD128F7A80B0F74404D79" },
   { name = "thoas", version = "1.2.1", build_tools = ["rebar3"], requirements = [], otp_app = "thoas", source = "hex", outer_checksum = "E38697EDFFD6E91BD12CEA41B155115282630075C2A727E7A6B2947F5408B86A" },
 ]
 
 [requirements]
 gleam_stdlib = { version = ">= 0.34.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
-glitzer = { version = ">= 1.0.0 and < 2.0.0"}
+glitzer = { version = ">= 1.0.0 and < 2.0.0" }
