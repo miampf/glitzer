@@ -1,0 +1,7 @@
+---
+version: 1.1.6
+title: Test spinner.frames_from_list
+file: ./test/glitzer_test.gleam
+test_name: spinner_frames_from_list_test
+---
+Frames(#("a", "b", "c"))

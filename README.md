@@ -125,6 +125,29 @@ fn do_stuff(bar, count) {
 All templates can be found in the
 [documentation](https://hexdocs.pm/glitzer/glitzer/progress.html)
 
+### Spinners
+
+Import spinners into your project using `import glitzer/spinner`.
+
+```gleam
+import glitzer/spinner
+
+pub fn main() {
+  let s =
+    spinner.default_spinner()
+    |> spinner.with_left_text("Imma spin >:3 ")
+    |> spinner.with_finish_text("I'm dizzy")
+    |> spinner.spin // this will continuously spin your spinner
+
+    // do some stuff
+    
+    // update the text
+    spinner.with_left_text(s, "Now imma spin some more :] ")
+
+    spinner.finish(s) // clear the line and print the finish text
+}
+```
+
 ## Roadmap
 
 See the [open issues](https://github.com/miampf/glitzer/issues) for a list of
