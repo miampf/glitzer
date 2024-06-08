@@ -168,6 +168,15 @@ pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   s
 }
 
+pub fn with_frames(spinner s: SpinnerStyle, frames f: Frames) -> SpinnerStyle {
+  let s = SpinnerStyle(..s, state: State(..s.state, frames: f))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
+}
+
 /// Set the right text of the spinner.
 pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   let s = SpinnerStyle(..s, state: State(..s.state, right_text: t))
@@ -235,8 +244,8 @@ pub fn spin(spinner s: SpinnerStyle) -> SpinnerStyle {
       state
     })
   SpinnerStyle(..s, state: State(..s.state, repeater: option.Some(repeater)))
-  |> tick
   // starts the spinner. tbh I don't exactly know why this is needed
+  |> tick
 }
 
 /// Finish a spinner. If it was countinously ticking, the ticking will be
