@@ -168,6 +168,8 @@ pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   s
 }
 
+/// Set the frames of the spinner. Useful if you want to update the frames of
+/// an already running spinner.
 pub fn with_frames(spinner s: SpinnerStyle, frames f: Frames) -> SpinnerStyle {
   let s = SpinnerStyle(..s, state: State(..s.state, frames: f))
   case s.state.repeater {
