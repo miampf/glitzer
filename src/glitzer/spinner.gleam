@@ -23,6 +23,7 @@
 ///     spinner.finish(s) // clear the line and print the finish text
 /// }
 /// ```
+import gleam/function
 import gleam/io
 import gleam/option.{type Option}
 
@@ -36,6 +37,8 @@ import glitzer/codes
 /// Contains everything that might get changed during runtime.
 pub opaque type State {
   State(
+    frames: Frames,
+    frame_transform: fn(String) -> String,
     left_text: String,
     right_text: String,
     progress: Int,
@@ -49,12 +52,7 @@ pub opaque type Frames {
 }
 
 pub opaque type SpinnerStyle {
-  SpinnerStyle(
-    frames: Frames,
-    tick_rate: Int,
-    finish_text: String,
-    state: State,
-  )
+  SpinnerStyle(tick_rate: Int, finish_text: String, state: State)
 }
 
 /// Convert a given list of `String` to `Frames`.
@@ -65,10 +63,11 @@ pub fn frames_from_list(frames frames: List(String)) -> Frames {
 /// Create a new spinner from `Frames` with a 100ms tick rate.
 pub fn new_spinner(frames f: Frames) -> SpinnerStyle {
   SpinnerStyle(
-    frames: f,
     tick_rate: 100,
     finish_text: "",
     state: State(
+      frames: f,
+      frame_transform: function.identity,
       progress: 0,
       left_text: "",
       right_text: "",
@@ -273,8 +272,8 @@ pub fn print_spinner(spinner s: SpinnerStyle) -> Nil {
 fn get_current_frame_string(s: SpinnerStyle) -> String {
   case
     glearray.get(
-      s.frames.frames,
-      s.state.progress % glearray.length(s.frames.frames),
+      s.state.frames.frames,
+      s.state.progress % glearray.length(s.state.frames.frames),
     )
   {
     Ok(f) -> f
