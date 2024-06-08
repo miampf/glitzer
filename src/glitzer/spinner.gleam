@@ -179,6 +179,46 @@ pub fn with_frames(spinner s: SpinnerStyle, frames f: Frames) -> SpinnerStyle {
   s
 }
 
+/// Set a transformation function that will be applied for each frame. This can
+/// be every function with the signature `fn(String) -> String`.
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+/// import glitzer/spinner
+/// import gleam_community/ansi
+///
+/// fn example() {
+///   let s =
+///     spinner.default_spinner()
+///     |> spinner.with_frame_transform(ansi.pink) // make all frames pink
+///     |> spinner.spin
+///
+///   // do some cool stuff
+///
+///   // update the spinner color and the spinner frames
+///   spinner.with_frame_transform(s, ansi.green)
+///   |> spinner.with_frames(spinner.frames_from_list(["a", "s", "d", "f"]))
+///
+///   // do some other stuff
+///   
+///   spinner.finish(s)
+/// }
+/// ```
+/// </details>
+pub fn with_frame_transform(
+  spinner s: SpinnerStyle,
+  transform fun: fn(String) -> String,
+) {
+  let s = SpinnerStyle(..s, state: State(..s.state, frame_transform: fun))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
+}
+
 /// Set the right text of the spinner.
 pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   let s = SpinnerStyle(..s, state: State(..s.state, right_text: t))
@@ -287,7 +327,7 @@ fn get_current_frame_string(s: SpinnerStyle) -> String {
       s.state.progress % glearray.length(s.state.frames.frames),
     )
   {
-    Ok(f) -> f
+    Ok(f) -> s.state.frame_transform(f)
     Error(_) -> ""
   }
 }
