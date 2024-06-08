@@ -5,8 +5,15 @@ file: ./test/glitzer_test.gleam
 test_name: spinner_with_tick_rate_test
 ---
 SpinnerStyle(
-  Frames(#("|", "/", "-", "\")),
   10,
   "",
-  State("", "", 0, False, None),
+  State(
+    Frames(#("|", "/", "-", "\")),
+    //fn(a) { ... },
+    "",
+    "",
+    0,
+    False,
+    None,
+  ),
 )

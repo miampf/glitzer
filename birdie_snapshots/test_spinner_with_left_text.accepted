@@ -5,8 +5,15 @@ file: ./test/glitzer_test.gleam
 test_name: spinner_with_left_text_test
 ---
 SpinnerStyle(
-  Frames(#("|", "/", "-", "\")),
   100,
   "",
-  State("asdf", "", 0, False, None),
+  State(
+    Frames(#("|", "/", "-", "\")),
+    //fn(a) { ... },
+    "asdf",
+    "",
+    0,
+    False,
+    None,
+  ),
 )

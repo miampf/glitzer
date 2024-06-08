@@ -23,6 +23,7 @@
 ///     spinner.finish(s) // clear the line and print the finish text
 /// }
 /// ```
+import gleam/function
 import gleam/io
 import gleam/option.{type Option}
 
@@ -36,6 +37,8 @@ import glitzer/codes
 /// Contains everything that might get changed during runtime.
 pub opaque type State {
   State(
+    frames: Frames,
+    frame_transform: fn(String) -> String,
     left_text: String,
     right_text: String,
     progress: Int,
@@ -49,12 +52,7 @@ pub opaque type Frames {
 }
 
 pub opaque type SpinnerStyle {
-  SpinnerStyle(
-    frames: Frames,
-    tick_rate: Int,
-    finish_text: String,
-    state: State,
-  )
+  SpinnerStyle(tick_rate: Int, finish_text: String, state: State)
 }
 
 /// Convert a given list of `String` to `Frames`.
@@ -65,10 +63,11 @@ pub fn frames_from_list(frames frames: List(String)) -> Frames {
 /// Create a new spinner from `Frames` with a 100ms tick rate.
 pub fn new_spinner(frames f: Frames) -> SpinnerStyle {
   SpinnerStyle(
-    frames: f,
     tick_rate: 100,
     finish_text: "",
     state: State(
+      frames: f,
+      frame_transform: function.identity,
       progress: 0,
       left_text: "",
       right_text: "",
@@ -169,6 +168,57 @@ pub fn with_left_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   s
 }
 
+/// Set the frames of the spinner. Useful if you want to update the frames of
+/// an already running spinner.
+pub fn with_frames(spinner s: SpinnerStyle, frames f: Frames) -> SpinnerStyle {
+  let s = SpinnerStyle(..s, state: State(..s.state, frames: f))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
+}
+
+/// Set a transformation function that will be applied for each frame. This can
+/// be every function with the signature `fn(String) -> String`.
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+/// import glitzer/spinner
+/// import gleam_community/ansi
+///
+/// fn example() {
+///   let s =
+///     spinner.default_spinner()
+///     |> spinner.with_frame_transform(ansi.pink) // make all frames pink
+///     |> spinner.spin
+///
+///   // do some cool stuff
+///
+///   // update the spinner color and the spinner frames
+///   spinner.with_frame_transform(s, ansi.green)
+///   |> spinner.with_frames(spinner.frames_from_list(["a", "s", "d", "f"]))
+///
+///   // do some other stuff
+///   
+///   spinner.finish(s)
+/// }
+/// ```
+/// </details>
+pub fn with_frame_transform(
+  spinner s: SpinnerStyle,
+  transform fun: fn(String) -> String,
+) {
+  let s = SpinnerStyle(..s, state: State(..s.state, frame_transform: fun))
+  case s.state.repeater {
+    option.Some(repeater) -> repeatedly.set_state(repeater, s.state)
+    option.None -> Nil
+  }
+  s
+}
+
 /// Set the right text of the spinner.
 pub fn with_right_text(spinner s: SpinnerStyle, text t: String) -> SpinnerStyle {
   let s = SpinnerStyle(..s, state: State(..s.state, right_text: t))
@@ -236,8 +286,8 @@ pub fn spin(spinner s: SpinnerStyle) -> SpinnerStyle {
       state
     })
   SpinnerStyle(..s, state: State(..s.state, repeater: option.Some(repeater)))
-  |> tick
   // starts the spinner. tbh I don't exactly know why this is needed
+  |> tick
 }
 
 /// Finish a spinner. If it was countinously ticking, the ticking will be
@@ -273,11 +323,11 @@ pub fn print_spinner(spinner s: SpinnerStyle) -> Nil {
 fn get_current_frame_string(s: SpinnerStyle) -> String {
   case
     glearray.get(
-      s.frames.frames,
-      s.state.progress % glearray.length(s.frames.frames),
+      s.state.frames.frames,
+      s.state.progress % glearray.length(s.state.frames.frames),
     )
   {
-    Ok(f) -> f
+    Ok(f) -> s.state.frame_transform(f)
     Error(_) -> ""
   }
 }

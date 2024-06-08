@@ -1,12 +1,12 @@
 ---
 version: 1.1.6
-title: Test spinner.with_finish_text
+title: Test spinner.with_frame_transform
 file: ./test/glitzer_test.gleam
-test_name: spinner_with_finish_text_test
+test_name: spinner_with_frame_transform_test
 ---
 SpinnerStyle(
   100,
-  "asdf",
+  "",
   State(
     Frames(#("|", "/", "-", "\")),
     //fn(a) { ... },
