@@ -236,6 +236,20 @@ pub fn spinner_with_finish_text_test() {
   |> birdie.snap(title: "Test spinner.with_finish_text")
 }
 
+pub fn spinner_with_frames_test() {
+  spinner.default_spinner()
+  |> spinner.with_frames(spinner.frames_from_list(["a", "s", "d", "f"]))
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_frames")
+}
+
+pub fn spinner_with_frame_transform_test() {
+  spinner.default_spinner()
+  |> spinner.with_frame_transform(fn(_) { "asdf" })
+  |> pprint.format
+  |> birdie.snap(title: "Test spinner.with_frame_transform")
+}
+
 pub fn spinner_tick_test() {
   spinner.default_spinner()
   |> spinner.tick()
