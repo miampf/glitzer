@@ -143,6 +143,7 @@ pub fn main() {
     
     // update the text
     spinner.with_left_text(s, "Now imma spin some more :] ")
+    |> spinner.with_frame_transform(fn(s) {"<" <> s <> ">"})
 
     spinner.finish(s) // clear the line and print the finish text
 }
