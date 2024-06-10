@@ -401,6 +401,24 @@ pub fn print_bar(bar bar: ProgressStyle) {
   )
 }
 
+pub fn get_raw_bar(bar bar: ProgressStyle) -> String {
+  let bar =
+    ProgressStyle(
+      ..bar,
+      state: State(..bar.state, finished: bar.state.progress >= bar.length),
+    )
+  let fill =
+    build_progress_fill(string_builder.new(), bar, bar.state.progress + 1, 0)
+    |> string_builder.to_string
+
+  let end = case bar.state.finished && bar.newline_on_finished {
+    True -> "\n"
+    False -> ""
+  }
+
+  bar.left <> fill <> bar.right <> end
+}
+
 fn build_progress_fill(
   fill: StringTree,
   bar: ProgressStyle,
