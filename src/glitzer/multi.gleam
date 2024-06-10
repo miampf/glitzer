@@ -1,7 +1,9 @@
+import gleam/int
 import gleam/io
 import gleam/iterator
 import gleam/list
 import gleam/option.{type Option, None, Some}
+import gleam/result
 
 import repeatedly.{type Repeater}
 
@@ -29,7 +31,7 @@ pub opaque type SameLine {
 }
 
 pub fn new_same_line() -> SameLine {
-  SameLine(state: LineState(line: []), refresh_rate: 100, repeater: None)
+  SameLine(state: LineState(line: []), refresh_rate: 10, repeater: None)
 }
 
 pub fn insert_progress_inline(
@@ -60,7 +62,7 @@ pub fn insert_spinner_inline(
 
 pub fn run_line(line l: SameLine) -> SameLine {
   let repeater =
-    repeatedly.call(l.refresh_rate, l.state, fn(state, _) {
+    repeatedly.call(l.refresh_rate, l.state, fn(state, i) {
       // reset the current line 
       io.print(
         codes.hide_cursor_code
@@ -74,7 +76,16 @@ pub fn run_line(line l: SameLine) -> SameLine {
           let #(name, value) = el
           let value = case value {
             Progress(p) -> Progress(p)
-            Spinner(s) -> Spinner(spinner.tick(s))
+            Spinner(s) -> {
+              // how much time passed?
+              let time_gone_by = i * l.refresh_rate
+              // how many times should the spinner have been ticked?
+              let spin_count =
+                result.unwrap(int.floor_divide(time_gone_by, s.tick_rate), 0)
+              // how much do we have to tick now?
+              let left_to_tick = spin_count - s.state.progress
+              Spinner(spinner.tick_by(s, left_to_tick))
+            }
           }
           #(name, value)
         })
