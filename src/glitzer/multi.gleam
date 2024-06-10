@@ -117,7 +117,7 @@ fn print_spinner_inline(s: SpinnerStyle) {
   )
 }
 
-pub fn tick_inline(line l: SameLine, name n: String) -> Nil {
+pub fn tick_inline(line l: SameLine, name n: String) -> SameLine {
   let value = list.key_find(l.state.line, n)
   let new_state = case value {
     Ok(value) -> {
@@ -142,9 +142,10 @@ pub fn tick_inline(line l: SameLine, name n: String) -> Nil {
     Some(r) -> repeatedly.set_state(r, new_state)
     None -> Nil
   }
+  SameLine(..l, state: new_state)
 }
 
-pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> Nil {
+pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> SameLine {
   let value = list.key_find(l.state.line, n)
   let new_state = case value {
     Ok(value) -> {
@@ -169,6 +170,7 @@ pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> Nil {
     Some(r) -> repeatedly.set_state(r, new_state)
     None -> Nil
   }
+  SameLine(..l, state: new_state)
 }
 
 pub opaque type MultiLine {
