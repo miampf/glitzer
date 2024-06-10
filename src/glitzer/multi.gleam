@@ -95,7 +95,7 @@ pub fn run_line(line l: SameLine) -> SameLine {
       |> iterator.each(fn(el) {
         let #(_, value) = el
         case value {
-          Progress(p) -> progress.print_bar(p)
+          Progress(p) -> print_bar_inline(p)
           Spinner(s) -> print_spinner_inline(s)
         }
       })
@@ -104,13 +104,71 @@ pub fn run_line(line l: SameLine) -> SameLine {
   SameLine(..l, repeater: Some(repeater))
 }
 
+fn print_bar_inline(p: ProgressStyle) {
+  io.print_error(progress.get_raw_bar(p) <> " ")
+}
+
 fn print_spinner_inline(s: SpinnerStyle) {
-  io.print(
+  io.print_error(
     s.state.left_text
     <> spinner.get_current_frame_string(s)
     <> s.state.right_text
     <> " ",
   )
+}
+
+pub fn tick_inline(line l: SameLine, name n: String) -> Nil {
+  let value = list.key_find(l.state.line, n)
+  let new_state = case value {
+    Ok(value) -> {
+      case value {
+        Progress(p) ->
+          LineState(line: list.key_set(
+            l.state.line,
+            n,
+            Progress(progress.tick(p)),
+          ))
+        Spinner(s) ->
+          LineState(line: list.key_set(
+            l.state.line,
+            n,
+            Spinner(spinner.tick(s)),
+          ))
+      }
+    }
+    Error(_) -> l.state
+  }
+  case l.repeater {
+    Some(r) -> repeatedly.set_state(r, new_state)
+    None -> Nil
+  }
+}
+
+pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> Nil {
+  let value = list.key_find(l.state.line, n)
+  let new_state = case value {
+    Ok(value) -> {
+      case value {
+        Progress(p) ->
+          LineState(line: list.key_set(
+            l.state.line,
+            n,
+            Progress(progress.tick_by(p, i)),
+          ))
+        Spinner(s) ->
+          LineState(line: list.key_set(
+            l.state.line,
+            n,
+            Spinner(spinner.tick_by(s, i)),
+          ))
+      }
+    }
+    Error(_) -> l.state
+  }
+  case l.repeater {
+    Some(r) -> repeatedly.set_state(r, new_state)
+    None -> Nil
+  }
 }
 
 pub opaque type MultiLine {

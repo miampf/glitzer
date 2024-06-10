@@ -298,7 +298,7 @@ pub fn finish(spinner s: SpinnerStyle) -> SpinnerStyle {
     option.Some(repeater) -> repeatedly.stop(repeater)
     option.None -> Nil
   }
-  io.println(
+  io.print_error(
     codes.hide_cursor_code
     <> codes.clear_line_code
     <> codes.return_line_start_code
