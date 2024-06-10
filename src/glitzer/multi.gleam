@@ -1,3 +1,5 @@
+///// ```
+
 import gleam/int
 import gleam/io
 import gleam/iterator
@@ -30,10 +32,13 @@ pub opaque type SameLine {
   )
 }
 
+/// Create a new `SameLine` that can print multiple spinners/progress bars on
+/// the same line.
 pub fn new_same_line() -> SameLine {
   SameLine(state: LineState(line: []), refresh_rate: 10, repeater: None)
 }
 
+/// Insert a `ProgressStyle` at the end of a given `SameLine`.
 pub fn insert_progress_inline(
   line l: SameLine,
   name n: String,
@@ -49,6 +54,7 @@ pub fn insert_progress_inline(
   )
 }
 
+/// Insert a `SpinnerStyle` at the end of a given `SameLine`.
 pub fn insert_spinner_inline(
   line l: SameLine,
   name n: String,
@@ -60,6 +66,24 @@ pub fn insert_spinner_inline(
   )
 }
 
+/// Run the line. This will print the whole line every `line.refresh_rate`
+/// milliseconds. It will also automatically tick all inline spinners with
+/// regard to their tick rate.
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+///  let multi =
+///    multi.new_same_line()
+///    |> multi.insert_spinner_inline("s1", spinner.pulsating_spinner())
+///    |> multi.insert_spinner_inline(
+///      "s2",
+///      spinner.with_tick_rate(spinner.default_spinner(), 500),
+///    )
+///    |> multi.run_line
+/// ```
+/// </details>
 pub fn run_line(line l: SameLine) -> SameLine {
   let repeater =
     repeatedly.call(l.refresh_rate, l.state, fn(state, i) {
@@ -117,6 +141,8 @@ fn print_spinner_inline(s: SpinnerStyle) {
   )
 }
 
+/// Tick a spinner or progress bar with the given name by 1. Does nothing if
+/// the spinner/progress bar doesn't exist.
 pub fn tick_inline(line l: SameLine, name n: String) -> SameLine {
   let value = list.key_find(l.state.line, n)
   let new_state = case value {
@@ -145,6 +171,8 @@ pub fn tick_inline(line l: SameLine, name n: String) -> SameLine {
   SameLine(..l, state: new_state)
 }
 
+/// Tick a spinner or progress bar with the given name by `i`. Does nothing if
+/// the spinner/progress bar doesn't exist.
 pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> SameLine {
   let value = list.key_find(l.state.line, n)
   let new_state = case value {
