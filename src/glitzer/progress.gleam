@@ -106,6 +106,7 @@ pub opaque type ProgressStyle {
     fill_finished: Option(Char),
     fill_head: Option(Char),
     fill_head_finished: Option(Char),
+    newline_on_finished: Bool,
     length: Int,
     state: State,
   )
@@ -123,6 +124,7 @@ pub fn default_bar() -> ProgressStyle {
     fill_finished: option.None,
     fill_head_finished: option.None,
     fill_head: option.None,
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -139,6 +141,7 @@ pub fn slim_bar() -> ProgressStyle {
     fill_finished: option.None,
     fill_head: option.None,
     fill_head_finished: option.None,
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -155,6 +158,7 @@ pub fn fancy_slim_bar() -> ProgressStyle {
     fill_finished: option.Some(Char(ansi.green(sym))),
     fill_head: option.None,
     fill_head_finished: option.None,
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -172,6 +176,7 @@ pub fn fancy_slim_arrow_bar() -> ProgressStyle {
     fill_finished: option.Some(Char(ansi.green(sym))),
     fill_head: option.Some(Char(ansi.red(sym_head))),
     fill_head_finished: option.Some(Char(ansi.green(sym_head))),
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -189,6 +194,7 @@ pub fn thick_bar() -> ProgressStyle {
     fill_finished: option.None,
     fill_head: option.None,
     fill_head_finished: option.None,
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -206,6 +212,7 @@ pub fn fancy_thick_bar() -> ProgressStyle {
     fill_finished: option.Some(Char(ansi.green(sym))),
     fill_head: option.None,
     fill_head_finished: option.None,
+    newline_on_finished: True,
     length: 100,
     state: State(progress: 0, finished: False),
   )
@@ -240,6 +247,7 @@ pub fn new_bar() -> ProgressStyle {
     fill_finished: option.None,
     fill_head: option.None,
     fill_head_finished: option.None,
+    newline_on_finished: True,
     length: 0,
     state: State(progress: 0, finished: False),
   )
@@ -293,6 +301,13 @@ pub fn with_fill_head_finished(
   fill char: Char,
 ) -> ProgressStyle {
   ProgressStyle(..bar, fill_head_finished: option.Some(char))
+}
+
+pub fn with_newline_on_finished(
+  bar bar: ProgressStyle,
+  newline n: Bool,
+) -> ProgressStyle {
+  ProgressStyle(..bar, newline_on_finished: n)
 }
 
 /// Add length to a progress bar.

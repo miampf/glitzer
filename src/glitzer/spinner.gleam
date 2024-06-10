@@ -35,7 +35,7 @@ import repeatedly.{type Repeater}
 import glitzer/codes
 
 /// Contains everything that might get changed during runtime.
-pub opaque type State {
+pub type State {
   State(
     frames: Frames,
     frame_transform: fn(String) -> String,
@@ -51,7 +51,7 @@ pub opaque type Frames {
   Frames(frames: Array(String))
 }
 
-pub opaque type SpinnerStyle {
+pub type SpinnerStyle {
   SpinnerStyle(tick_rate: Int, finish_text: String, state: State)
 }
 
@@ -320,7 +320,7 @@ pub fn print_spinner(spinner s: SpinnerStyle) -> Nil {
   )
 }
 
-fn get_current_frame_string(s: SpinnerStyle) -> String {
+pub fn get_current_frame_string(s: SpinnerStyle) -> String {
   case
     glearray.get(
       s.state.frames.frames,

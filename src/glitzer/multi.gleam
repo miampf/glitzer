@@ -1,6 +1,11 @@
-import gleam/dict.{type Dict}
+import gleam/io
+import gleam/iterator
+import gleam/list
 import gleam/option.{type Option, None, Some}
 
+import repeatedly.{type Repeater}
+
+import glitzer/codes
 import glitzer/progress.{type ProgressStyle}
 import glitzer/spinner.{type SpinnerStyle}
 
@@ -9,12 +14,22 @@ pub opaque type StyleWrapper {
   Spinner(SpinnerStyle)
 }
 
+pub opaque type LineState {
+  LineState(line: List(#(String, StyleWrapper)))
+}
+
 pub opaque type SameLine {
-  SameLine(line: Dict(String, Option(StyleWrapper)))
+  // Dict of a name, the character offset and the kind of style
+  // that should be printed.
+  SameLine(
+    refresh_rate: Int,
+    repeater: Option(Repeater(LineState)),
+    state: LineState,
+  )
 }
 
 pub fn new_same_line() -> SameLine {
-  SameLine(dict.new())
+  SameLine(state: LineState(line: []), refresh_rate: 100, repeater: None)
 }
 
 pub fn insert_progress_inline(
@@ -22,7 +37,14 @@ pub fn insert_progress_inline(
   name n: String,
   progress p: ProgressStyle,
 ) -> SameLine {
-  SameLine(dict.insert(l.line, n, Some(Progress(p))))
+  SameLine(
+    ..l,
+    state: LineState(
+      line: list.append(l.state.line, [
+        #(n, Progress(progress.with_newline_on_finished(p, False))),
+      ]),
+    ),
+  )
 }
 
 pub fn insert_spinner_inline(
@@ -30,53 +52,54 @@ pub fn insert_spinner_inline(
   name n: String,
   spinner s: SpinnerStyle,
 ) -> SameLine {
-  SameLine(dict.insert(l.line, n, Some(Spinner(s))))
+  SameLine(
+    ..l,
+    state: LineState(line: list.append(l.state.line, [#(n, Spinner(s))])),
+  )
 }
 
-pub fn run_spinners_inline(line l: SameLine) -> SameLine {
-  let new_line =
-    dict.map_values(l.line, fn(_key, value) {
-      case value {
-        Some(Progress(p)) -> Some(Progress(p))
-        Some(Spinner(s)) -> Some(Spinner(spinner.spin(s)))
-        None -> None
-      }
-    })
-  SameLine(new_line)
-}
-
-pub fn run_spinner_inline(line l: SameLine, name n: String) -> SameLine {
-  let new_line =
-    dict.update(l.line, n, fn(spinner) {
-      case spinner {
-        Some(s) -> {
-          case s {
-            Some(Progress(p)) -> Some(Progress(p))
-            Some(Spinner(s)) -> Some(Spinner(spinner.spin(s)))
-            None -> None
+pub fn run_line(line l: SameLine) -> SameLine {
+  let repeater =
+    repeatedly.call(l.refresh_rate, l.state, fn(state, _) {
+      // reset the current line 
+      io.print(
+        codes.hide_cursor_code
+        <> codes.clear_line_code
+        <> codes.return_line_start_code,
+      )
+      let new_line =
+        // tick all spinners in the line
+        iterator.from_list(state.line)
+        |> iterator.map(fn(el) {
+          let #(name, value) = el
+          let value = case value {
+            Progress(p) -> Progress(p)
+            Spinner(s) -> Spinner(spinner.tick(s))
           }
+          #(name, value)
+        })
+        |> iterator.to_list
+      // print the new line 
+      iterator.from_list(new_line)
+      |> iterator.each(fn(el) {
+        let #(_, value) = el
+        case value {
+          Progress(p) -> progress.print_bar(p)
+          Spinner(s) -> print_spinner_inline(s)
         }
-        option.None -> option.None
-      }
+      })
+      LineState(line: new_line)
     })
-  SameLine(new_line)
+  SameLine(..l, repeater: Some(repeater))
 }
 
-pub fn tick_progress_inline(line l: SameLine, name n: String) -> SameLine {
-  let new_line =
-    dict.update(l.line, n, fn(progress) {
-      case progress {
-        Some(p) -> {
-          case p {
-            Some(Progress(p)) -> Some(Progress(progress.tick(p)))
-            Some(Spinner(s)) -> Some(Spinner(s))
-            None -> None
-          }
-        }
-        None -> None
-      }
-    })
-  SameLine(new_line)
+fn print_spinner_inline(s: SpinnerStyle) {
+  io.print(
+    s.state.left_text
+    <> spinner.get_current_frame_string(s)
+    <> s.state.right_text
+    <> " ",
+  )
 }
 
 pub opaque type MultiLine {
