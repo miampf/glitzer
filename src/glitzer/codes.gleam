@@ -10,4 +10,8 @@ pub const return_home_code = "\u{001b}[H"
 /// Print this code to return to the start of the line
 pub const return_line_start_code = "\r"
 
+/// Print this code to hide the cursor
 pub const hide_cursor_code = "\u{001b}[?25l"
+
+/// Print this code to show the cursor if it has been hidden
+pub const show_cursor_code = "\u{001b}[?25h"

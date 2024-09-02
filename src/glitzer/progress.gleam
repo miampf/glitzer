@@ -370,7 +370,7 @@ pub fn print_bar(bar bar: ProgressStyle) {
     |> string_builder.to_string
 
   let end = case bar.state.finished {
-    True -> "\n"
+    True -> "\n" <> codes.show_cursor_code
     False -> ""
   }
 
