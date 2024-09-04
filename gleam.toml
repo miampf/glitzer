@@ -1,5 +1,5 @@
 name = "glitzer"
-version = "1.1.1"
+version = "1.1.2"
 description = "Progress bars and other fancy stuff for CLI tools."
 licenses = ["GPL-3.0"]
 
