@@ -1,5 +1,3 @@
-///// ```
-
 import gleam/int
 import gleam/io
 import gleam/iterator
@@ -201,6 +199,11 @@ pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> SameLine {
   SameLine(..l, state: new_state)
 }
 
+pub opaque type MultiLineWrapper {
+  Style(StyleWrapper)
+  Line(SameLine)
+}
+
 pub opaque type MultiLine {
-  MultiLine(lines: List(StyleWrapper))
+  MultiLine(lines: List(MultiLineWrapper))
 }
