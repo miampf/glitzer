@@ -299,7 +299,7 @@ pub fn finish(spinner s: SpinnerStyle) -> SpinnerStyle {
     option.None -> Nil
   }
   io.println(
-    codes.hide_cursor_code
+    codes.show_cursor_code
     <> codes.clear_line_code
     <> codes.return_line_start_code
     <> s.finish_text,
