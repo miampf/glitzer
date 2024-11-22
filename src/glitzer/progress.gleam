@@ -51,7 +51,7 @@ import gleam/io
 import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}
 import gleam/string
-import gleam/string_builder.{type StringBuilder}
+import gleam/string_tree.{type StringTree}
 
 import gleam_community/ansi
 
@@ -366,8 +366,8 @@ pub fn print_bar(bar bar: ProgressStyle) {
       state: State(..bar.state, finished: bar.state.progress >= bar.length),
     )
   let fill =
-    build_progress_fill(string_builder.new(), bar, bar.state.progress + 1, 0)
-    |> string_builder.to_string
+    build_progress_fill(string_tree.new(), bar, bar.state.progress + 1, 0)
+    |> string_tree.to_string
 
   let end = case bar.state.finished {
     True -> "\n" <> codes.show_cursor_code
@@ -386,11 +386,11 @@ pub fn print_bar(bar bar: ProgressStyle) {
 }
 
 fn build_progress_fill(
-  fill: StringBuilder,
+  fill: StringTree,
   bar: ProgressStyle,
   left_nonempty: Int,
   count: Int,
-) -> StringBuilder {
+) -> StringTree {
   let fill = case left_nonempty > 0 {
     True -> {
       case left_nonempty == 1 {
@@ -399,7 +399,7 @@ fn build_progress_fill(
       }
     }
     // fill all thats left with empty characters
-    False -> string_builder.append(fill, bar.empty.char)
+    False -> string_tree.append(fill, bar.empty.char)
   }
 
   case bar.length > count {
@@ -408,14 +408,11 @@ fn build_progress_fill(
   }
 }
 
-fn get_finished_head_fill(
-  fill: StringBuilder,
-  bar: ProgressStyle,
-) -> StringBuilder {
+fn get_finished_head_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
   case bar.state.finished {
     True ->
       // build the finished style
-      string_builder.append(
+      string_tree.append(
         fill,
         option.unwrap(
           // if head_finished exists
@@ -430,20 +427,17 @@ fn get_finished_head_fill(
       )
     // build the unfinished style
     False ->
-      string_builder.append(fill, option.unwrap(bar.fill_head, bar.fill).char)
+      string_tree.append(fill, option.unwrap(bar.fill_head, bar.fill).char)
   }
 }
 
-fn get_finished_fill(fill: StringBuilder, bar: ProgressStyle) -> StringBuilder {
+fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
   case bar.state.finished {
     True ->
       // build the finished style
-      string_builder.append(
-        fill,
-        option.unwrap(bar.fill_finished, bar.fill).char,
-      )
+      string_tree.append(fill, option.unwrap(bar.fill_finished, bar.fill).char)
     // build the unfinished style
-    False -> string_builder.append(fill, bar.fill.char)
+    False -> string_tree.append(fill, bar.fill.char)
   }
 }
 
