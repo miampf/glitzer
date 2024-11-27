@@ -48,10 +48,10 @@
 /// }
 /// ```
 import gleam/io
-import gleam/yielder.{type Yielder}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_tree.{type StringTree}
+import gleam/yielder.{type Yielder}
 
 import gleam_community/ansi
 
