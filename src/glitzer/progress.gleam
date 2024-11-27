@@ -7,7 +7,7 @@
 ///
 /// ```gleam
 /// import gleam/int
-/// import gleam/iterator
+/// import gleam/yielder
 /// 
 /// import glitzer/progress
 /// 
@@ -18,8 +18,8 @@
 ///         |> progress.with_fill(progress.char_from_string("+"))
 ///         |> progress.with_empty(progress.char_from_string("-"))
 ///         |> progress.with_left_text("Doing stuff: ")
-///     iterator.range(1, 100)
-///     |> progress.each_iterator(bar, fn(bar, i) {
+///     yielder.range(1, 100)
+///     |> progress.each_yielder(bar, fn(bar, i) {
 ///         progress.with_left_text(bar, int.to_string(i) <> " ")
 ///         |> progress.print_bar
 ///         // do some other stuff here
@@ -48,7 +48,7 @@
 /// }
 /// ```
 import gleam/io
-import gleam/iterator.{type Iterator}
+import gleam/yielder.{type Yielder}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_tree.{type StringTree}
@@ -441,7 +441,7 @@ fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
   }
 }
 
-/// Map an iterator to a function with a bar that ticks every run of the
+/// Map an yielder to a function with a bar that ticks every run of the
 /// function.
 ///
 /// <details>
@@ -451,8 +451,8 @@ fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
 /// import glitzer/progress
 ///
 /// fn example(bar) {
-///   iterator.range(0, 100)
-///   |> progress.map_iterator(fn(bar, element) {
+///   yielder.range(0, 100)
+///   |> progress.map_yielder(fn(bar, element) {
 ///     progress.print_bar(bar)
 ///     // do some heavy calculations here >:)
 ///   })
@@ -460,13 +460,13 @@ fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
 /// ```
 ///
 /// </details>
-pub fn map_iterator(
-  over i: Iterator(a),
+pub fn map_yielder(
+  over y: Yielder(a),
   bar bar: ProgressStyle,
   with fun: fn(ProgressStyle, a) -> b,
-) -> Iterator(b) {
-  iterator.index(i)
-  |> iterator.map(fn(pair) {
+) -> Yielder(b) {
+  yielder.index(y)
+  |> yielder.map(fn(pair) {
     let #(el, i) = pair
     tick_bar_by_i(bar, i)
     |> fun(el)
@@ -480,15 +480,15 @@ fn tick_bar_by_i(bar, i) -> ProgressStyle {
   }
 }
 
-pub fn map2_iterator(
-  iterator1 i1: Iterator(a),
-  iterator2 i2: Iterator(b),
+pub fn map2_yielder(
+  yielder1 y1: Yielder(a),
+  yielder2 y2: Yielder(b),
   bar bar: ProgressStyle,
   with fun: fn(ProgressStyle, a, b) -> c,
-) -> Iterator(c) {
-  iterator.zip(i1, i2)
-  |> iterator.index
-  |> iterator.map(fn(pair) {
+) -> Yielder(c) {
+  yielder.zip(y1, y2)
+  |> yielder.index
+  |> yielder.map(fn(pair) {
     let #(pair, i) = pair
     let #(el1, el2) = pair
     tick_bar_by_i(bar, i)
@@ -496,13 +496,13 @@ pub fn map2_iterator(
   })
 }
 
-pub fn each_iterator(
-  over i: Iterator(a),
+pub fn each_yielder(
+  over y: Yielder(a),
   bar bar: ProgressStyle,
   with fun: fn(ProgressStyle, a) -> b,
 ) -> Nil {
-  iterator.index(i)
-  |> iterator.each(fn(pair) {
+  yielder.index(y)
+  |> yielder.each(fn(pair) {
     let #(el, i) = pair
     tick_bar_by_i(bar, i)
     |> fun(el)
