@@ -1,0 +1,7 @@
+---
+version: 1.2.4
+title: Test progress.map_yielder
+file: ./test/glitzer_test.gleam
+test_name: progress_map_yielder_test
+---
+Yielder(//fn() { ... })
