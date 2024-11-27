@@ -12,7 +12,8 @@ packages = [
   { name = "gleam_community_colour", version = "1.4.1", build_tools = ["gleam"], requirements = ["gleam_json", "gleam_stdlib"], otp_app = "gleam_community_colour", source = "hex", outer_checksum = "386CB9B01B33371538672EEA8A6375A0A0ADEF41F17C86DDCB81C92AD00DA610" },
   { name = "gleam_erlang", version = "0.30.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_erlang", source = "hex", outer_checksum = "760618870AE4A497B10C73548E6E44F43B76292A54F0207B3771CBB599C675B4" },
   { name = "gleam_json", version = "2.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_json", source = "hex", outer_checksum = "0A57FB5666E695FD2BEE74C0428A98B0FC11A395D2C7B4CDF5E22C5DD32C74C6" },
-  { name = "gleam_stdlib", version = "0.43.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "69EF22E78FDCA9097CBE7DF91C05B2A8B5436826D9F66680D879182C0860A747" },
+  { name = "gleam_stdlib", version = "0.44.0", build_tools = ["gleam"], requirements = [], otp_app = "gleam_stdlib", source = "hex", outer_checksum = "A6E55E309A6778206AAD4038D9C49E15DF71027A1DB13C6ADA06BFDB6CF1260E" },
+  { name = "gleam_yielder", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_yielder", source = "hex", outer_checksum = "44C8DE196A10634667F5F7B93128A997B35DFD37E26F775D749BC6A239B499A8" },
   { name = "glearray", version = "1.0.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "glearray", source = "hex", outer_checksum = "B99767A9BC63EF9CC8809F66C7276042E5EFEACAA5B25188B552D3691B91AC6D" },
   { name = "gleeunit", version = "1.2.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleeunit", source = "hex", outer_checksum = "F7A7228925D3EE7D0813C922E062BFD6D7E9310F0BEE585D3A42F3307E3CFD13" },
   { name = "glexer", version = "1.0.1", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "glexer", source = "hex", outer_checksum = "BD477AD657C2B637FEF75F2405FAEFFA533F277A74EF1A5E17B55B1178C228FB" },
@@ -29,6 +30,7 @@ birdie = { version = ">= 1.1.6 and < 2.0.0" }
 gleam_community_ansi = { version = ">= 1.4.0 and < 2.0.0" }
 gleam_community_colour = { version = ">= 1.4.0 and < 2.0.0" }
 gleam_stdlib = { version = ">= 0.34.0 and < 2.0.0" }
+gleam_yielder = { version = ">= 1.0.0 and < 2.0.0" }
 glearray = { version = ">= 1.0.0 and < 2.0.0" }
 gleeunit = { version = ">= 1.0.0 and < 2.0.0" }
 pprint = { version = ">= 1.0.3 and < 2.0.0" }
