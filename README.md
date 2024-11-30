@@ -75,19 +75,19 @@ You can access the progress bars with `import glitzer/progress`.
 
 ```gleam
 import gleam/int
-import gleam/iterator
+import gleam/yielder
 
 import glitzer/progress
 
 pub fn main() {
-    let bar = 
-        progress.new_bar() 
+    let bar =
+        progress.new_bar()
         |> progress.with_length(100)
         |> progress.with_fill(progress.char_from_string("+"))
         |> progress.with_empty(progress.char_from_string("-"))
         |> progress.with_left_text("Doing stuff: ")
-    iterator.range(1, 100)
-    |> progress.each_iterator(bar, fn(bar, i) {
+    yielder.range(1, 100)
+    |> progress.each_yielder(bar, fn(bar, i) {
         progress.with_left_text(bar, int.to_string(i) <> " ")
         |> progress.print_bar
         // do some other stuff here
@@ -117,7 +117,7 @@ fn do_stuff(bar, count) {
             // some heavy lifting
             do_stuff(bar, count + 1)
         }
-       False -> Nil 
+       False -> Nil
     }
 }
 ```
@@ -140,7 +140,7 @@ pub fn main() {
     |> spinner.spin // this will continuously spin your spinner
 
     // do some stuff
-    
+
     // update the text
     spinner.with_left_text(s, "Now imma spin some more :] ")
     |> spinner.with_frame_transform(fn(s) {"<" <> s <> ">"})
@@ -166,7 +166,7 @@ New code and pull requests are greatly appreciated! If you want to contribute,
 check the [contributing guidelines](#contributing) and submit a PR :3
 
 If you have any questions, feel free to
-[create a question]((https://github.com/miampf/glitzer/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+))!
+[create a question](<(https://github.com/miampf/glitzer/issues/new?assignees=&labels=question&template=04_SUPPORT_QUESTION.md&title=support%3A+)>)!
 Please note that it may take some time for me to respond. I am not paid for
 doing this and do have a private life (surprise!) :]
 
