@@ -7,7 +7,7 @@
 ///
 /// ```gleam
 /// import gleam/int
-/// import gleam/iterator
+/// import gleam/yielder
 /// 
 /// import glitzer/progress
 /// 
@@ -18,8 +18,8 @@
 ///         |> progress.with_fill(progress.char_from_string("+"))
 ///         |> progress.with_empty(progress.char_from_string("-"))
 ///         |> progress.with_left_text("Doing stuff: ")
-///     iterator.range(1, 100)
-///     |> progress.each_iterator(bar, fn(bar, i) {
+///     yielder.range(1, 100)
+///     |> progress.each_yielder(bar, fn(bar, i) {
 ///         progress.with_left_text(bar, int.to_string(i) <> " ")
 ///         |> progress.print_bar
 ///         // do some other stuff here
@@ -52,6 +52,7 @@ import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_tree.{type StringTree}
+import gleam/yielder.{type Yielder}
 
 import gleam_community/ansi
 
@@ -460,6 +461,7 @@ fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
 /// ```
 ///
 /// </details>
+@deprecated("`map_iterator` was deprecated and will be removed in the next release. Use `map_yielder` instead.")
 pub fn map_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
@@ -473,13 +475,7 @@ pub fn map_iterator(
   })
 }
 
-fn tick_bar_by_i(bar, i) -> ProgressStyle {
-  case i > 0 {
-    True -> tick_bar_by_i(tick(bar), i - 1)
-    False -> bar
-  }
-}
-
+@deprecated("`map2_iterator` was deprecated and will be removed in the next release. Use `map2_yielder` instead.")
 pub fn map2_iterator(
   iterator1 i1: Iterator(a),
   iterator2 i2: Iterator(b),
@@ -496,6 +492,7 @@ pub fn map2_iterator(
   })
 }
 
+@deprecated("`each_iterator` was deprecated and will be removed in the next release. Use `each_yielder` instead.")
 pub fn each_iterator(
   over i: Iterator(a),
   bar bar: ProgressStyle,
@@ -503,6 +500,74 @@ pub fn each_iterator(
 ) -> Nil {
   iterator.index(i)
   |> iterator.each(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
+}
+
+/// Map a yielder to a function with a bar that ticks every run of the
+/// function.
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+/// import glitzer/progress
+///
+/// fn example(bar) {
+///   yielder.range(0, 100)
+///   |> progress.map_yielder(fn(bar, element) {
+///     progress.print_bar(bar)
+///     // do some heavy calculations here >:)
+///   })
+/// }
+/// ```
+///
+/// </details>
+pub fn map_yielder(
+  over y: Yielder(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Yielder(b) {
+  yielder.index(y)
+  |> yielder.map(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
+}
+
+fn tick_bar_by_i(bar, i) -> ProgressStyle {
+  case i > 0 {
+    True -> tick_bar_by_i(tick(bar), i - 1)
+    False -> bar
+  }
+}
+
+pub fn map2_yielder(
+  yielder1 y1: Yielder(a),
+  yielder2 y2: Yielder(b),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a, b) -> c,
+) -> Yielder(c) {
+  yielder.zip(y1, y2)
+  |> yielder.index
+  |> yielder.map(fn(pair) {
+    let #(pair, i) = pair
+    let #(el1, el2) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el1, el2)
+  })
+}
+
+pub fn each_yielder(
+  over y: Yielder(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Nil {
+  yielder.index(y)
+  |> yielder.each(fn(pair) {
     let #(el, i) = pair
     tick_bar_by_i(bar, i)
     |> fun(el)
