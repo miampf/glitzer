@@ -1,9 +1,9 @@
 import gleam/int
 import gleam/io
-import gleam/iterator
 import gleam/list
 import gleam/option.{type Option, None, Some}
 import gleam/result
+import gleam/yielder
 
 import repeatedly.{type Repeater}
 
@@ -93,8 +93,8 @@ pub fn run_line(line l: SameLine) -> SameLine {
       )
       let new_line =
         // tick all spinners in the line
-        iterator.from_list(state.line)
-        |> iterator.map(fn(el) {
+        yielder.from_list(state.line)
+        |> yielder.map(fn(el) {
           let #(name, value) = el
           let value = case value {
             Progress(p) -> Progress(p)
@@ -111,10 +111,10 @@ pub fn run_line(line l: SameLine) -> SameLine {
           }
           #(name, value)
         })
-        |> iterator.to_list
+        |> yielder.to_list
       // print the new line 
-      iterator.from_list(new_line)
-      |> iterator.each(fn(el) {
+      yielder.from_list(new_line)
+      |> yielder.each(fn(el) {
         let #(_, value) = el
         case value {
           Progress(p) -> print_bar_inline(p)
