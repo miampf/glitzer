@@ -1,0 +1,7 @@
+---
+version: 1.2.4
+title: Test progress.map_iterator
+file: ./test/glitzer_test.gleam
+test_name: progress_map_iterator_test
+---
+Iterator(//fn() { ... })

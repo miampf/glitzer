@@ -1,3 +1,4 @@
+import gleam/iterator
 import gleam/yielder
 import gleeunit
 
@@ -147,6 +148,23 @@ pub fn progress_finish_test() {
   |> progress.finish
   |> pprint.format
   |> birdie.snap(title: "Test progresss.finish")
+}
+
+pub fn progress_map_iterator_test() {
+  let bar = progress.new_bar()
+  iterator.empty()
+  |> progress.map_iterator(bar, fn(_, _) { progress.print_bar(bar) })
+  |> pprint.format
+  |> birdie.snap(title: "Test progress.map_iterator")
+}
+
+pub fn progress_map2_iterator_test() {
+  let bar = progress.new_bar()
+  let i1 = iterator.empty()
+  let i2 = iterator.empty()
+  progress.map2_iterator(i1, i2, bar, fn(_, _, _) { progress.print_bar(bar) })
+  |> pprint.format
+  |> birdie.snap(title: "Test progress.map2_iterator")
 }
 
 pub fn progress_map_yielder_test() {

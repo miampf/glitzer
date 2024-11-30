@@ -48,6 +48,7 @@
 /// }
 /// ```
 import gleam/io
+import gleam/iterator.{type Iterator}
 import gleam/option.{type Option}
 import gleam/string
 import gleam/string_tree.{type StringTree}
@@ -441,7 +442,71 @@ fn get_finished_fill(fill: StringTree, bar: ProgressStyle) -> StringTree {
   }
 }
 
-/// Map an yielder to a function with a bar that ticks every run of the
+/// Map an iterator to a function with a bar that ticks every run of the
+/// function.
+///
+/// <details>
+/// <summary>Example:</summary>
+///
+/// ```gleam
+/// import glitzer/progress
+///
+/// fn example(bar) {
+///   iterator.range(0, 100)
+///   |> progress.map_iterator(fn(bar, element) {
+///     progress.print_bar(bar)
+///     // do some heavy calculations here >:)
+///   })
+/// }
+/// ```
+///
+/// </details>
+@deprecated("`map_iterator` was deprecated and will be removed in the next release. Use `map_yielder` instead.")
+pub fn map_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Iterator(b) {
+  iterator.index(i)
+  |> iterator.map(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
+}
+
+@deprecated("`map2_iterator` was deprecated and will be removed in the next release. Use `map2_yielder` instead.")
+pub fn map2_iterator(
+  iterator1 i1: Iterator(a),
+  iterator2 i2: Iterator(b),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a, b) -> c,
+) -> Iterator(c) {
+  iterator.zip(i1, i2)
+  |> iterator.index
+  |> iterator.map(fn(pair) {
+    let #(pair, i) = pair
+    let #(el1, el2) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el1, el2)
+  })
+}
+
+@deprecated("`each_iterator` was deprecated and will be removed in the next release. Use `each_yielder` instead.")
+pub fn each_iterator(
+  over i: Iterator(a),
+  bar bar: ProgressStyle,
+  with fun: fn(ProgressStyle, a) -> b,
+) -> Nil {
+  iterator.index(i)
+  |> iterator.each(fn(pair) {
+    let #(el, i) = pair
+    tick_bar_by_i(bar, i)
+    |> fun(el)
+  })
+}
+
+/// Map a yielder to a function with a bar that ticks every run of the
 /// function.
 ///
 /// <details>
