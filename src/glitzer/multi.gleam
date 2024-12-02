@@ -33,7 +33,7 @@ pub opaque type SameLine {
 /// Create a new `SameLine` that can print multiple spinners/progress bars on
 /// the same line.
 pub fn new_same_line() -> SameLine {
-  SameLine(state: LineState(line: []), refresh_rate: 10, repeater: None)
+  SameLine(state: LineState(line: []), refresh_rate: 100, repeater: None)
 }
 
 /// Insert a `ProgressStyle` at the end of a given `SameLine`.
@@ -197,13 +197,4 @@ pub fn tick_by_inline(line l: SameLine, name n: String, i i: Int) -> SameLine {
     None -> Nil
   }
   SameLine(..l, state: new_state)
-}
-
-pub opaque type MultiLineWrapper {
-  Style(StyleWrapper)
-  Line(SameLine)
-}
-
-pub opaque type MultiLine {
-  MultiLine(lines: List(MultiLineWrapper))
 }
