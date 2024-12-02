@@ -1,4 +1,4 @@
-import gleam/iterator
+import gleam/yielder
 import glitzer/multi
 import glitzer/progress
 import glitzer/spinner
@@ -18,12 +18,12 @@ pub fn main() {
     )
     |> multi.run_line
 
-  iterator.range(0, 100_000_000)
-  |> iterator.run
+  yielder.range(0, 100_000_000)
+  |> yielder.run
 
   multi.tick_by_inline(multi, "p1", 50)
   |> multi.tick_by_inline("p2", 10)
 
-  iterator.range(0, 100_000_000)
-  |> iterator.run
+  yielder.range(0, 100_000_000)
+  |> yielder.run
 }
