@@ -1,3 +1,48 @@
+/// Run multiple spinners and progress bars at the same time!
+/// For when you really have someting to say.
+///
+/// Currently, this only supports running multiple indicators on the
+/// same line using `multi.new_same_line`.
+///
+/// Example:
+///
+/// ```gleam
+/// import gleam/yielder
+/// import glitzer/multi
+/// import glitzer/progress
+/// import glitzer/spinner
+///
+/// pub fn main() {
+///  let multi =
+///    multi.new_same_line()
+///    |> multi.insert_spinner_inline("s1", spinner.pulsating_spinner())
+///    |> multi.insert_spinner_inline(
+///      "s2",
+///      spinner.with_tick_rate(spinner.default_spinner(), 500),
+///    )
+///    |> multi.insert_progress_inline("p1", progress.fancy_slim_bar())
+///    |> multi.insert_progress_inline(
+///      "p2",
+///      progress.with_length(progress.fancy_thick_bar(), 10),
+///    )
+///    |> multi.run_line
+///
+///  yielder.range(0, 100_000_000)
+///  |> yielder.run
+///
+///  multi.tick_by_inline(multi, "p1", 50)
+///  |> multi.tick_by_inline("p2", 10)
+///
+///  yielder.range(0, 100_000_000)
+///  |> yielder.run
+/// }
+/// ```
+///
+/// You can see that, when inserting an indicator using
+/// `multi.insert_{progress,spinner}_inline`, you hand over a string before the
+/// actual progress indicator. This string is the identifier of the indicator
+/// and **has to be unique**. You use this ID to later address the spinner or
+/// progress bar (e.g. with `multi.tick_by_inline`).
 import gleam/int
 import gleam/io
 import gleam/list
