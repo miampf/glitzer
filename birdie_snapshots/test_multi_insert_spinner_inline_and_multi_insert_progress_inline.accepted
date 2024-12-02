@@ -1,0 +1,43 @@
+---
+version: 1.2.4
+title: Test multi.insert_spinner_inline and multi.insert_progress_inline
+file: ./test/glitzer_test.gleam
+test_name: multi_insert_spinner_progress_test
+---
+SameLine(
+  100,
+  None,
+  LineState([
+    #(
+      "s1",
+      Spinner(SpinnerStyle(
+        100,
+        "",
+        State(
+          Frames(#("|", "/", "-", "\")),
+          //fn(a) { ... },
+          "",
+          "",
+          0,
+          False,
+          None,
+        ),
+      )),
+    ),
+    #(
+      "p1",
+      Progress(ProgressStyle(
+        "[",
+        "]",
+        Char(" "),
+        Char("#"),
+        None,
+        None,
+        None,
+        False,
+        100,
+        State(0, False),
+      )),
+    ),
+  ]),
+)

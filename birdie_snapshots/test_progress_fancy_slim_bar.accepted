@@ -1,5 +1,5 @@
 ---
-version: 1.1.6
+version: 1.2.4
 title: Test progress.fancy_slim_bar
 file: ./test/glitzer_test.gleam
 test_name: progress_fancy_slim_bar_test
@@ -12,6 +12,7 @@ ProgressStyle(
   Some(Char("[32m—[39m")),
   None,
   None,
+  True,
   100,
   State(0, False),
 )

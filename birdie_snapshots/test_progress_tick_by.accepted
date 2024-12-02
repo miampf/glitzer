@@ -1,5 +1,5 @@
 ---
-version: 1.1.6
+version: 1.2.4
 title: Test progress.tick_by
 file: ./test/glitzer_test.gleam
 test_name: progress_tick_by_test
@@ -12,6 +12,7 @@ ProgressStyle(
   None,
   None,
   None,
+  True,
   0,
   State(10, True),
 )
