@@ -1,0 +1,7 @@
+---
+version: 1.2.4
+title: Test multi.new_same_line
+file: ./test/glitzer_test.gleam
+test_name: multi_new_same_line_test
+---
+SameLine(100, None, LineState([]))

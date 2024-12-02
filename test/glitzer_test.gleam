@@ -1,6 +1,7 @@
 import gleam/iterator
 import gleam/yielder
 import gleeunit
+import glitzer/multi
 
 import birdie
 import pprint
@@ -280,4 +281,20 @@ pub fn spinner_tick_by_test() {
   |> spinner.tick_by(10)
   |> pprint.format
   |> birdie.snap(title: "Test spinner.tick_by")
+}
+
+pub fn multi_new_same_line_test() {
+  multi.new_same_line()
+  |> pprint.format
+  |> birdie.snap(title: "Test multi.new_same_line")
+}
+
+pub fn multi_insert_spinner_progress_test() {
+  multi.new_same_line()
+  |> multi.insert_spinner_inline("s1", spinner.default_spinner())
+  |> multi.insert_progress_inline("p1", progress.default_bar())
+  |> pprint.format
+  |> birdie.snap(
+    title: "Test multi.insert_spinner_inline and multi.insert_progress_inline",
+  )
 }
